@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Living Corporation</title>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1b2240;--ink:#f3f1e8;--panel:#e2a56f;--pink:#3b2412;--btn:#3a4272;--btn2:#1a1d38;--hi:#ffd166;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c0f1c}}
+:root[data-theme="dark"]{--bg:#0c0f1c}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:radial-gradient(ellipse at top,#26305a,var(--bg) 70%) fixed;color:var(--ink);font:13px/1.4 Silkscreen,ui-monospace,monospace;padding:14px;min-height:100%}
+.wrap{max-width:1000px;margin:0 auto}
+h1{font-size:clamp(30px,6.5vw,58px);margin:6px 0 2px;text-align:center;letter-spacing:2px;text-shadow:4px 4px 0 #000,-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000}
+.sub{text-align:center;font-size:12px;opacity:.85;margin-bottom:12px}
+.bar{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;align-items:center;margin-bottom:10px;font-size:12px}
+.bar button{font:inherit;background:var(--btn);color:#fff;border:3px solid var(--btn2);box-shadow:inset 0 0 0 2px #5a64a0;padding:3px 10px;cursor:pointer}
+.bar button.on{background:var(--hi);color:#222}
+button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.frame{border:10px solid #c9cde0;outline:4px solid #4a4f72;background:#0b0c15;padding:6px;display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:6px}
+@media(max-width:760px){.frame{grid-template-columns:1fr}}
+canvas#cv{display:block;width:100%;height:auto;image-rendering:pixelated;cursor:pointer;background:#000}
+#side{background:var(--panel);color:var(--pink);padding:12px;font-size:11px;max-height:460px;overflow:hidden;display:flex;flex-direction:column}
+#side h2{margin:0 0 2px;font-size:14px}
+#hist{overflow:auto;margin-top:6px;flex:1;min-height:120px}
+#hist p{margin:0 0 6px;padding-bottom:5px;border-bottom:1px dashed #b07c4c}#hist i{opacity:.65;font-style:normal;font-size:10px}
+#hist .t{font-style:italic;opacity:.8}#hist .e{font-weight:700}
+.nb{display:flex;align-items:center;gap:6px;margin:2px 0}.nb b{width:52px;font-weight:400}.nb u{flex:1;height:7px;background:#b9854f;text-decoration:none}.nb u s{display:block;height:100%;text-decoration:none}
+#dir{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+#dir button{font:inherit;font-size:12px;color:#fff;background:var(--btn);border:4px solid var(--btn2);box-shadow:inset 0 0 0 2px #5a64a0;padding:6px 12px 6px 8px;display:flex;gap:7px;align-items:center;cursor:pointer}
+#dir button.on{border-color:var(--hi)}#dir canvas{image-rendering:pixelated;width:24px;height:24px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}@media(max-width:760px){.cols{grid-template-columns:1fr}}
+.cols section{background:#e2a56f;color:#3b2412;border:4px solid #1a1d38;padding:10px;font-size:11px}
+.cols h3{margin:0 0 6px;font-size:13px}
+#aq{height:140px}#fl{max-height:72px;overflow:auto;margin-bottom:6px}#dm{height:170px}#dm,#aq{overflow:auto;background:#f3d9b6;padding:6px;margin-bottom:6px}
+#dm p{margin:0 0 5px}#dm .o{text-align:right}#dm .w{color:#1c3a6e}
+.q{border-bottom:1px dashed #b07c4c;padding:4px 0}.q button,.row2 button{font:inherit;background:var(--btn);color:#fff;border:2px solid var(--btn2);padding:2px 10px;cursor:pointer;margin-top:3px}
+.row2{display:flex;gap:4px;margin-top:4px}.row2 input,.row2 select{flex:1;min-width:0;font:12px ui-monospace,monospace;padding:5px;border:2px solid #1a1d38;background:#fff;color:#222}.row2 select{flex:0 0 64px}.row2 button{margin:0}
+.away{background:#ffd166;color:#222;border:3px solid #1a1d38;padding:8px 10px;margin-bottom:10px;cursor:pointer;font:12px/1.4 ui-monospace,monospace}
+#doc{position:fixed;inset:0;background:rgba(5,6,15,.72);z-index:50;overflow:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 12px calc(16px + env(safe-area-inset-bottom,0px))}
+.paper{position:relative;max-width:560px;margin:0 auto;background:#fbf6e6;color:#2b2418;padding:22px 24px;border:1px solid #cdbf98;box-shadow:0 8px 0 rgba(0,0,0,.35);font:13px/1.5 Georgia,'Times New Roman',serif}
+.paper .lh{font:700 15px Silkscreen,monospace;letter-spacing:1px;border-bottom:3px double #2b2418;padding-bottom:6px}
+.paper .ti{font:700 18px Georgia,serif;margin:10px 0 2px}.paper .meta{font-size:11px;color:#7a6c4a;margin-bottom:10px}
+.fr{display:flex;gap:8px;border-bottom:1px solid #d9ccaa;padding:3px 0}.fr span{width:130px;color:#7a6c4a;flex:none}.fr b{font-weight:600}
+.pp{margin:8px 0}.rec{background:#efe6c8;border-left:4px solid #8a6d2f;padding:6px 8px;margin:8px 0}
+.sigs{display:flex;gap:16px;margin-top:16px}.sigs>div{flex:1;border-top:1px solid #2b2418;padding-top:3px;font-size:11px;color:#7a6c4a;min-height:58px}
+.cur{font:italic 22px 'Segoe Script','Brush Script MT','Lucida Handwriting',cursive;color:#1c3a8a;display:block;line-height:1.3}
+.paper input,.paper textarea{width:100%;font:inherit;padding:5px;border:1px solid #b9ab84;background:#fffdf5;color:#2b2418}
+.paper .acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.paper button{font:700 12px Silkscreen,monospace;padding:7px 12px;border:3px solid #1a1d38;background:#2f9e4f;color:#fff;cursor:pointer}.paper button.no{background:#c0392b}.paper button.x{background:#6a6783}.paper button:disabled{opacity:.45;cursor:not-allowed}
+.stamp{position:absolute;right:20px;top:64px;transform:rotate(-14deg);border:4px solid;padding:2px 12px;font:700 22px Silkscreen,monospace;opacity:.88}.stamp.ok{color:#2f9e4f}.stamp.no{color:#c0392b}
+.note{font:12px/1.5 ui-monospace,monospace;opacity:.7;max-width:80ch;margin:18px auto 0;text-align:center}
+</style></head><body><div class="wrap">
+<h1>LIVING CORPORATION</h1><div class="sub">A virtual office with autonomous digital employees…</div>
+<div class="bar"><span id="clk"></span><span id="cash"></span><span id="rev"></span><span id="ctl">1 game day = 1h 30m, always running</span></div>
+<div id="away" hidden></div>
+<div class="frame"><canvas id="cv" width="640" height="400" aria-label="Pixel office with eight AI employees"></canvas>
+<div id="side"><div id="info">Click on a character to see chat history.</div><div id="hist"></div></div></div>
+<div id="dir"></div>
+<div class="cols"><section><h3>Talk to <span id="tn">a worker</span></h3><div id="dm"><p><i>Select a worker to talk to them.</i></p></div><div class="row2"><input id="msg" placeholder="Say something…" maxlength="300" aria-label="Message"><button id="send">Send</button></div><div class="row2"><input id="task" placeholder="Assign a task…" maxlength="80" aria-label="Task"><select id="th" aria-label="Hours"><option value="1">1h</option><option value="3" selected>3h</option><option value="6">6h</option></select><button id="assign">Assign</button></div></section>
+<section><h3>Approvals <span id="ac"></span></h3><div id="aq"></div><div id="fl"></div><div class="row2"><input id="hrole" placeholder="Ask HR to hire a…" maxlength="60" aria-label="Role to hire"><button id="hire">Ask HR</button></div></section></div>
+<p class="note">Prototype: employees decide what to do from needs, personality and time of day. Chats, task reports and HR pitches are written live by Claude once you allow it; without permission, simple fallback replies are used. Daily life runs on its own, but task requests, raise requests and job applications arrive as forms that need your signature, and HR screens applications first. Your world saves to your account automatically. When you come back after time away, the page catches up on everything that would have happened (up to 3 days), at 1 game day per 1h 30m.</p></div>
+<div id="doc" hidden></div>
+<script>
+const $=s=>document.querySelector(s),cv=$('#cv'),g=cv.getContext('2d');
+const W=40,H=25,T=16;let X=g;const R=(x,y,w,h,c)=>{X.fillStyle=c;X.fillRect(x|0,y|0,w,h)};
+const DR=new Set(['12,6','12,7','25,6','25,7','5,10','6,10','18,10','19,10','32,10','33,10','20,24']);
+const wl=(x,y)=>y<=1||x==0||x==W-1||y==H-1||((x==12||x==25)&&y<10)||y==10,isWall=(x,y)=>wl(x,y)&&!DR.has(x+','+y);
+const objs=[],blocked=new Set(),A=(k,a)=>a.forEach(([x,y])=>objs.push({k,x,y,u:null}));
+A('work',[[5,5],[22,5],[4,15],[8,15],[12,15],[4,20],[8,20],[12,20],[16,15],[16,20],[20,15],[20,20]]);
+A('eat',[[28,7],[32,7],[36,7],[22,19],[23,19]]);
+A('rest',[[28,3],[29,3],[33,3],[34,3],[28,21],[29,21],[35,13],[36,13]]);
+A('sleep',[[20,24]]);
+const DEC=[[1,2,3,1,'shelf'],[10,3,1,1,'plant'],[10,8,1,1,'cab'],[15,4,6,3,'table'],[26,2,1,1,'vend'],[37,2,1,1,'fridge'],[38,9,1,1,'plant'],[1,12,1,1,'plant'],[1,22,1,1,'plant'],[16,12,1,1,'plant'],[16,22,1,1,'plant'],[18,12,1,1,'cooler'],[20,12,2,1,'copier'],[26,15,8,4,'conf'],[38,11,1,4,'shelf']];
+const bl=(x,y,w,h)=>{for(let i=0;i<w;i++)for(let j=0;j<h;j++)blocked.add((x+i)+','+(y+j))};
+DEC.forEach(d=>bl(...d));objs.forEach(o=>{if(o.k=='work')bl(o.x,o.y-1,2,1);if(o.k=='eat')bl(o.x,o.y-1,1,1)});
+function path(sx,sy,tx,ty){const q=[[sx,sy]],pv=new Map([[sx+','+sy,null]]);
+ while(q.length){const [x,y]=q.shift();if(x==tx&&y==ty)break;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy,k=nx+','+ny;if(nx<0||ny<0||nx>=W||ny>=H||isWall(nx,ny)||blocked.has(k)||pv.has(k))continue;pv.set(k,[x,y]);q.push([nx,ny])}}
+ if(!pv.has(tx+','+ty))return[];const o=[];let c=[tx,ty];while(c&&!(c[0]==sx&&c[1]==sy)){o.unshift(c);c=pv.get(c[0]+','+c[1])}return o}
+// ---- static background
+const bg=document.createElement('canvas');bg.width=640;bg.height=400;
+function plant(x,y){R(x+4,y+9,8,6,'#8a4f2a');R(x+3,y+3,10,7,'#2f9e4f');R(x+5,y,6,5,'#46c46a');R(x+2,y+5,3,3,'#3cb35e');R(x+11,y+6,3,3,'#3cb35e')}
+function drawDec([tx,ty,w,h,k]){const x=tx*T,y=ty*T,pw=w*T,ph=h*T;
+ if(k=='plant')plant(x,y);
+ if(k=='shelf'){R(x,y,pw,ph,'#5b3a22');R(x,y,pw,2,'#7d5330');for(let i=0;i<pw;i+=3)R(x+i+1,y+(pw>16?3:2)+(i%2?0:1),2,Math.min(ph,12)-3,['#d9534f','#4dabf7','#ffd43b','#51cf66','#c77dff'][(i/3|0)%5])}
+ if(k=='cab'){R(x+1,y+3,14,12,'#8e93a8');R(x+1,y+3,14,2,'#b4b9cc');R(x+3,y+7,10,1,'#4b4f63');R(x+3,y+11,10,1,'#4b4f63')}
+ if(k=='table'){R(x,y+2,pw,ph-2,'#7a4a24');R(x+2,y+4,pw-4,ph-8,'#a8693a');R(x+4,y+6,pw-8,3,'#c4824c');R(x+20,y+16,10,8,'#fff');R(x+50,y+22,9,6,'#f3e9a0')}
+ if(k=='conf'){R(x,y+2,pw,ph-2,'#8a4a1c');R(x+3,y+5,pw-6,ph-10,'#d98a45');R(x+6,y+8,pw-12,4,'#eaa766');R(x+30,y+26,14,10,'#fff');R(x+80,y+30,10,8,'#fff');R(x+60,y+16,5,5,'#444')}
+ if(k=='vend'){R(x+1,y+1,14,15,'#2d6cdf');R(x+3,y+3,10,7,'#bfe6ff');R(x+4,y+12,8,2,'#111')}
+ if(k=='fridge'){R(x+1,y,14,16,'#e8ecf2');R(x+1,y+6,14,1,'#8b93a3');R(x+12,y+3,1,2,'#6a7284');R(x+12,y+9,1,4,'#6a7284')}
+ if(k=='cooler'){R(x+4,y,8,7,'#9fd8f5');R(x+3,y+7,10,9,'#dfe4ef');R(x+6,y+9,3,2,'#2d6cdf')}
+ if(k=='copier'){R(x+1,y+3,30,12,'#c6cad6');R(x+1,y+3,30,3,'#e5e8f0');R(x+4,y+8,12,3,'#7a8094');R(x+22,y+8,6,2,'#3cb35e')}}
+function desk(x,y){R(x+1,y+3,30,12,'#7d5330');R(x+1,y+3,30,9,'#b07a48');R(x+2,y+4,28,2,'#c9955f');R(x+11,y-3,11,8,'#1c1f33');R(x+12,y-2,9,5,'#2a5a7a');R(x+15,y+5,3,2,'#1c1f33');R(x+5,y+8,8,3,'#e8e4d0');R(x+24,y+7,4,4,'#d9534f')}
+function build(){X=bg.getContext('2d');let s=3;const r=()=>(s=(s*16807)%2147483647)/2147483647;
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const px=x*T,py=y*T;
+  if(wl(x,y)&&!DR.has(x+','+y)){R(px,py,T,T,y<=1?(y?'#44456a':'#2c2d48'):'#3b3b57');if(y>=2||x==0||x==W-1){R(px,py,T,2,'#6f6f95');R(px,py+T-2,T,2,'#2c2d44')}else if(y==1){R(px,py+11,T,5,'#33344f');R(px,py+11,T,1,'#7a7ba0')}continue}
+  const z=y<10?(x<12?0:x<25?1:2):3;
+  if(z==0){R(px,py,T,T,'#b98a5e');R(px,py+7,T,1,'#a07048');R(px,py+15,T,1,'#a07048');R(px+((y%2)?4:11),py,1,8,'#a07048');R(px+((y%2)?11:4),py+8,1,8,'#a07048')}
+  if(z==1){R(px,py,T,T,(x+y)&1?'#6a79a8':'#6373a2');R(px,py,T,1,'#7d8cba')}
+  if(z==2){R(px,py,T,T,(x+y)&1?'#e8dcc3':'#dfd1b5');R(px,py,T,1,'#c9b999')}
+  if(z==3){R(px,py,T,T,(x+y)&1?'#4b8b88':'#448079');R(px,py,T,1,'#3a6f6a');R(px,py,1,T,'#3a6f6a')}
+  for(let i=0;i<3;i++)R(px+r()*14,py+r()*14,1,1,'rgba(0,0,0,.12)')}
+ [4,8,16,20,29,34].forEach(wx=>{const x=wx*T;R(x-1,3,26,15,'#cfd3e6');R(x+1,5,10,11,'#9fd3f0');R(x+13,5,10,11,'#9fd3f0');R(x+1,5,10,3,'#c8ecff');R(x+13,5,10,3,'#c8ecff')});
+ R(6*T,5*T,6*T,3*T,'#7c2f3a');R(6*T+3,5*T+3,6*T-6,3*T-6,'#a34452');
+ R(3*T,6*T,0,0,'#000');
+ DEC.forEach(drawDec);
+ objs.forEach(o=>{const x=o.x*T,y=o.y*T;
+  if(o.k=='work'){desk(x,y-T);R(x+3,y+6,10,8,'#2e3262');R(x+3,y+6,10,2,'#4a509a')}
+  if(o.k=='eat'){const ty=y-T;R(x+1,ty+4,14,10,'#8a5a2e');R(x+2,ty+4,12,8,'#d8a064');R(x+5,ty+6,6,4,'#fff');R(x+6,ty+7,4,2,'#e9552e')}
+  if(o.k=='rest'){R(x,y+4,T,11,'#992d22');R(x,y+1,T,5,'#7a221a');R(x+1,y+7,14,7,'#d94a3b');R(x+1,y+7,14,2,'#ea6a5b')}
+  if(o.k=='sleep'){R(x,y,T,T,'#26a65b');R(x+3,y+2,10,12,'#1a7d44');R(x+3,y+2,10,2,'#fff')}})
+ X=g}
+// ---- sprites
+function figure(x,y,c,o){const sk=c.c[0],hr=c.c[1],sh=c.c[2],sit=o.sit,oy=sit?3:0,l=o.w&&(o.f>>2&1)?1:0,bob=o.w&&!l?1:0,d=o.d;y-=bob;
+ if(!o.av){R(x+3,y+14+bob,10,2,'rgba(0,0,0,.25)');if(!sit){R(x+4,y+11,3,4+l,'#323559');R(x+9,y+11,3,4+(1-l),'#323559');R(x+4,y+14+l,3,2,'#111');R(x+9,y+15-l,3,1,'#111')}}
+ const t=o.av?y+2:y+4+oy;if(!o.av){R(x+3,t,10,7,sh);R(x+1+0,t+1,2,6,sh);R(x+13,t+1,2,6,sh);R(x+1,t+6,2,2,sk);R(x+13,t+6,2,2,sk);if(c.acc==1)R(x+7,t,2,6,'#d33')}
+ const hy=t-7;R(x+4,hy,8,7,sk);R(x+4,hy,8,3,hr);R(x+3,hy+1,1,4,hr);R(x+12,hy+1,1,4,hr);
+ if(d==1)R(x+4,hy,8,7,hr);else if(d>=2){R(x+(d==2?9:3),hy,4,6,hr);R(x+(d==2?5:10),hy+3,1,2,'#222')}else{R(x+6,hy+3,1,2,'#222');R(x+9,hy+3,1,2,'#222');if(c.acc==2)R(x+5,hy+2,6,1,'#111')}}
+function face(cv2,c){const k=cv2.getContext('2d');k.clearRect(0,0,16,16);X=k;figure(0,6,c,{av:1,d:0});X=g}
+// ---- citizens
+let seed=11;const rnd=()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296},pick=a=>a[Math.floor(rnd()*a.length)];
+const SK=['#f2c9a0','#d9a073','#a86f48','#f6d7b8'],HR=['#2b2233','#6b3a1f','#d9a21b','#c4452e','#3b5bdb','#222'],SH=['#e8638b','#4dabf7','#51cf66','#ffd43b','#9775fa','#ff922b','#20c997','#adb5bd'];
+const people=[['Marcus Hale','Manager',6400],['Jenna Cole','Designer',4700],['Pablo Ruiz','Accountant',4900],['Dina Wu','Marketer',4300],['Oscar Lind','HR officer',5200],['Rita Shah','Sales rep',4100],['Theo Brandt','Support lead',3900],['Yuki Mori','Analyst',5400]];
+const cits=people.map((p,i)=>{let x,y;do{x=14+Math.floor(rnd()*10);y=12+Math.floor(rnd()*10)}while(isWall(x,y)||blocked.has(x+','+y));
+ return{id:i,name:p[0],role:p[1],sal:p[2],money:400+Math.floor(rnd()*900),tx:x,ty:y,px:x,py:y,path:[],act:'idle',idle:i*.7,t:0,d:0,obj:null,rel:{},hist:[],tasks:[],dm:[],away:false,say:null,acc:i%3,
+ p:{ext:.15+rnd()*.85,work:.2+rnd()*.8,amb:rnd(),pat:.15+rnd()*.85,soc:.15+rnd()*.85},skill:.6+rnd()*.5,
+ n:{food:55+rnd()*40,energy:60+rnd()*35,social:40+rnd()*50,fun:45+rnd()*45},c:[SK[i%4],pick(HR),SH[i]]}});
+let gm=7.5*60,day=0,speed=1,sel=-1,cash=50000,rev=0;const DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const fmt=()=>DN[day%7]+' '+String(Math.floor(gm/60)).padStart(2,'0')+':'+String(Math.floor(gm%60)).padStart(2,'0');
+const hs=(c,k,text,who)=>{c.hist.push({d:'D'+(day+1)+' '+fmt().slice(4),k,who,text});if(c.hist.length>80)c.hist.shift()};
+const cl=v=>Math.max(0,Math.min(100,v)),mood=c=>(c.n.food+c.n.energy+c.n.social+c.n.fun)/4,eff=c=>(.4*c.n.energy+.3*c.n.food+.3*mood(c))/100;
+const rel=v=>v>=75?'close friend':v>=45?'friend':v>=20?'friendly':v<=-15?'rival':'acquaintance';
+const TOP=[['Did you see the numbers this quarter?','Barely. Coffee is the only thing keeping me going.'],['What are you having for lunch?','Leftovers. Again. And you?'],['Any plans for the weekend?','Sleeping. Maybe more sleeping.'],['The printer jammed on me again.','It jams on everyone. It has a vendetta.'],['I have an idea for the next project.','Tell me more, but not before coffee.'],['I heard the boss is in a mood today.','When is the boss not in a mood?'],['Nice weather out there, right?','I would not know. I live under fluorescent lights.'],['Do you like your desk?','It has a nice view of another desk.']];
+const GR=['Can people stop chewing so loudly?','This place runs on bad coffee.'],GR2=['Is this really necessary right now?','Make it quick.'],FU=['Ha, fair point.','Right? Anyway.','I will think about it.','Funny you say that.'],CL=['Talk later!','Back to the grind.','Good chat. See you around.','Okay, I need a snack now.'];
+const ARG=[['You took credit for my work.','That is not what happened!','Do not walk away from me.','I am talking to HR.'],['You are always late with reports.','And you never read them.','Unbelievable.','Whatever.']];
+function convo(a,b,x){if(x)return pick(ARG);const t=pick(TOP);return[a.p.pat<.3&&rnd()<.5?pick(GR):t[0],b.p.pat<.3&&rnd()<.4?pick(GR2):t[1],pick(FU),pick(CL)]}
+function release(c){if(c.obj){c.obj.u=null;c.obj=null}}
+function partner(c){let b=null,bs=-9;for(const o of cits){if(o==c||!['idle','work','rest'].includes(o.act))continue;const s=(c.rel[o.id]||0)/50+(1-Math.abs(c.p.ext-o.p.ext))*.6+o.p.soc*.4+rnd()*.5-Math.hypot(c.tx-o.tx,c.ty-o.ty)/40;if(s>bs){bs=s;b=o}}return b}
+function goto(c,x,y,then){c.path=path(c.tx,c.ty,x,y);c.act='go';c.then=then;c.t=0}
+const TH={eat:'Getting hungry. Heading for the break room.',sleep:'Exhausted. Time to go home.',work:'Time to get some work done.',rest:'I need a breather.'};
+function go(c,a){if(a=='chat'){const p=partner(c);if(!p)return false;c.partner=p;hs(c,'t','Feeling chatty. Going to find '+p.name.split(' ')[0]+'.');goto(c,p.tx,p.ty,'chat');return true}
+ const f=objs.filter(o=>o.k==a&&(a=='sleep'||!o.u)).sort((u,v)=>Math.hypot(u.x-c.tx,u.y-c.ty)-Math.hypot(v.x-c.tx,v.y-c.ty))[0];if(!f)return false;
+ if(a!='sleep'){f.u=c.id;c.obj=f}hs(c,'t',TH[a]);goto(c,f.x,f.y,a);return true}
+function decide(c){const h=gm/60,wd=day%7<5,n=c.n,nd=v=>(100-v)/100,wk=(wd&&((h>=9&&h<17)||(c.p.work>.8&&h>=17&&h<18)))||(c.tasks.length>0&&h>=9&&h<20);
+ const S=[['eat',nd(n.food)**2*2.2+(n.food<55&&((h>=11.5&&h<14)||(h>=18&&h<20))?.3:0)],['sleep',nd(n.energy)**2*1.8+((h>=22||h<6)?.9:0)-((h>=8&&h<20&&n.energy>35)?.5:0)],
+ ['work',wk?(.8*(.4+c.p.work)*((n.food>25&&n.energy>20)?1:.2)+c.p.amb*.1+(c.tasks.length?.35:0)):0],['rest',nd(n.fun)**1.5*(1.3-c.p.work*.5)+(h>=18?.15:0)],['chat',nd(n.social)**1.4*(.5+c.p.soc)*1.2]];
+ S.forEach(s=>s[1]+=rnd()*.12);S.sort((a,b)=>b[1]-a[1]);for(const [a,s] of S)if(s>=.12&&go(c,a))return;c.act='idle';c.idle=3+rnd()*8}
+function endAct(c){release(c);c.away=false;c.act='idle';c.idle=1+rnd()*3}
+function startAct(c){c.act=c.then;c.t=0;if(c.act=='sleep'){c.away=true;return}
+ if(c.act=='chat'){const p=c.partner;if(!p||['sleep','eat'].includes(p.act)||p.away||Math.hypot(p.tx-c.tx,p.ty-c.ty)>2){c.act='idle';c.idle=2;return}
+  release(p);p.path=[];p.act='chat';p.t=0;p.partner=c;c.dur=p.dur=70+rnd()*30;c.li=-1;
+  const x=rnd()<.05+(1-c.p.pat)*(1-p.p.pat)*.15,old=c.rel[p.id]||0,d=x?-12:3+4*(c.p.soc+p.p.soc)/2;c.rel[p.id]=old+d;p.rel[c.id]=(p.rel[c.id]||0)+d;c.convo=convo(c,p,x);
+  const n=old+d;if(rel(n)!=rel(old)&&d>0){const m=c.name.split(' ')[0]+' and '+p.name.split(' ')[0]+' are now '+rel(n)+'s.';hs(c,'e',m);hs(p,'e',m)}
+  if(x){const m='Argument between '+c.name.split(' ')[0]+' and '+p.name.split(' ')[0]+'.';hs(c,'e',m);hs(p,'e',m)}}}
+function move(c,dt){let d=12*dt;while(d>0&&c.path.length){const n=c.path[0],dx=n[0]-c.px,dy=n[1]-c.py,ds=Math.hypot(dx,dy);
+ if(ds<=d){c.px=n[0];c.py=n[1];c.tx=n[0];c.ty=n[1];c.path.shift();d-=ds}else{c.px+=dx/ds*d;c.py+=dy/ds*d;d=0}
+ c.d=Math.abs(dx)>Math.abs(dy)?(dx<0?2:3):(dy<0?1:0)}}
+function tick(c,dt){const n=c.n,a=c.act;n.food-=(a=='sleep'?.05:.11)*dt;n.social-=(a=='sleep'?.03:.07)*dt;n.fun-=(a=='work'?.08:a=='sleep'?.02:.05)*dt;
+ if(a=='sleep')n.energy+=.28*dt;else n.energy-=(a=='work'?.1:.06)*dt;for(const k in n)n[k]=cl(n[k]);
+ if(c.path.length){move(c,dt);return}const h=gm/60;c.t+=dt;
+ if(a=='go'){startAct(c);if(c.act=='work'||c.act=='eat'||c.act=='rest')c.d=c.act=='rest'?0:1}
+ else if(a=='idle'){if((c.idle-=dt)<=0)decide(c)}
+ else if(a=='work'){const e=eff(c),r=1.2*c.skill*(.6+.4*e)*dt;rev+=r;cash+=r;const tk=c.tasks[0];if(tk){tk.prog+=dt*e;if(tk.prog>=tk.hours*60){c.tasks.shift();rev+=tk.reward;cash+=tk.reward;report(c,tk)}}
+  if(gm>=(c.tasks.length?20:17+(c.p.work>.8?1:0))*60||(day%7>4&&!c.tasks.length)||n.food<15||n.energy<10)endAct(c)}
+ else if(a=='eat'){n.food=cl(n.food+1.7*dt);if(n.food>=95||c.t>60){c.money-=8;endAct(c)}}
+ else if(a=='sleep'){if(n.energy>=96||(c.t>180&&h>=6&&h<11&&n.energy>70))endAct(c)}
+ else if(a=='rest'){n.fun=cl(n.fun+.6*dt);n.energy=cl(n.energy+.06*dt);if(c.t>=45||n.food<12)endAct(c)}
+ else if(a=='chat'){n.social=cl(n.social+.6*dt);const p=c.partner;
+  if(c.convo){const i=Math.min(3,Math.floor(c.t/(c.dur/4)));if(i!=c.li){c.li=i;const sp=i%2?p:c,ls=i%2?c:p,tx=c.convo[i];sp.say=tx;ls.say=null;hs(sp,'s',tx,sp.name.split(' ')[0]);hs(ls,'s',tx,sp.name.split(' ')[0])}}
+  if(c.t>=c.dur){c.say=null;if(p)p.say=null;c.convo=null;c.act='idle';c.idle=.5}}}
+function eod(){let pay=0;cits.forEach(c=>{const s=c.sal/30;pay+=s;c.money+=s});cash-=pay+300;rev=0}
+function step(dt){const pg=gm;gm+=dt;if(pg<540&&gm>=540&&day%7<5)dailyProposals();if(pg<600&&gm>=600&&day%7<5)applicants();
+ for(const i of Q)if(i.stage=='hr'&&day*1440+gm>=i.due){i.stage='owner';hs(cits[i.from],'e','Forwarded the application of '+i.d.name+' to the Owner with my recommendation.');rq()}
+ if(gm>=1440){gm-=1440;day++;eod()}cits.forEach(c=>tick(c,dt))}
+// ---- render
+function bubble(c){const x0=c.px*T+8,y0=c.py*T-14;g.font='7px monospace';const ws=c.say.split(' '),L=[];let s='';ws.forEach(w=>{if((s+' '+w).length>22){L.push(s);s=w}else s=s?s+' '+w:w});L.push(s);
+ const w=Math.max(...L.map(l=>g.measureText(l).width))+8,h=L.length*9+4,x=Math.max(2,Math.min(640-w-2,x0-w/2)),y=y0-h;
+ R(x-1,y-1,w+2,h+2,'#222');R(x,y,w,h,'#fff');R(x0-2,y+h,4,3,'#fff');g.fillStyle='#222';L.forEach((l,i)=>g.fillText(l,x+4,y+9+i*9))}
+let fr=0;function draw(){X=g;g.drawImage(bg,0,0);
+ objs.forEach(o=>{if(o.k=='work'&&o.u!=null&&cits[o.u].act=='work')R(o.x*T+12,(o.y-1)*T-2,9,5,'#8fe9ff')});
+ [...cits].filter(c=>!c.away).sort((a,b)=>a.py-b.py).forEach(c=>{const sit=!c.path.length&&['work','eat','rest'].includes(c.act),w=c.path.length>0,off=c.act=='chat'?(c.id%2?3:-3):0;
+  if(c.id==sel){R(c.px*T+1+off,c.py*T+13,14,3,'#ffd166')}
+  figure(c.px*T+off,c.py*T,c,{sit,w,f:fr,d:c.d});
+  const e={work:'💻',eat:'🍴',rest:'🛋️'}[c.act];if(e&&sit&&!c.say){g.font='8px sans-serif';g.fillText(e,c.px*T+3,c.py*T-12)}});
+ cits.forEach(c=>{if(c.say&&!c.away)bubble(c)});
+ const h=gm/60,a=h<6?.38:h<8?.38*(8-h)/2:h<18?0:h<20?.38*(h-18)/2:.38;if(a>0){g.fillStyle='rgba(12,16,60,'+a+')';g.fillRect(0,0,640,400)}fr++}
+const bc=v=>v>50?'#2f9e4f':v>25?'#e0a21b':'#d9534f',nb=(l,v,col)=>'<div class="nb"><b>'+l+'</b><u><s style="width:'+Math.round(v)+'%;background:'+(col||bc(v))+'"></s></u></div>';
+const AL={go:'walking',idle:'thinking',work:'working',eat:'eating',sleep:'at home, sleeping',rest:'relaxing',chat:'chatting'};
+let hl=-1,hv=-2;
+function ui(){$('#clk').textContent=fmt();$('#cash').textContent='Cash $'+Math.round(cash).toLocaleString();$('#rev').textContent='Today +$'+Math.round(rev);
+ if(sel<0)return;const c=cits[sel];rdm();
+ $('#info').innerHTML='<h2>'+c.name+'</h2>'+c.role+' · $'+c.sal.toLocaleString()+'/mo<br>Now: '+(c.act=='go'?'heading to '+c.then:AL[c.act])+(c.tasks[0]?'<br>Task: '+esc(c.tasks[0].title)+nb('Done',Math.min(100,c.tasks[0].prog/(c.tasks[0].hours*.6)),'#3b5bdb'):'')+'<div style="margin-top:6px">'+nb('Food',c.n.food)+nb('Energy',c.n.energy)+nb('Social',c.n.social)+nb('Fun',c.n.fun)+nb('Mood',mood(c))+'</div>';
+ if(hv!=sel||hl!=c.hist.length){hv=sel;hl=c.hist.length;$('#hist').innerHTML=c.hist.slice().reverse().map(m=>'<p class="'+m.k+'"><i>'+m.d+'</i><br>'+(m.k=='s'?esc(m.who)+': “'+esc(m.text)+'”':m.k=='t'?'(thinking) '+esc(m.text):esc(m.text))+'</p>').join('')||'<p>No messages yet.</p>'}}
+function dir(){$('#dir').innerHTML='';cits.forEach(c=>{const b=document.createElement('button'),k=document.createElement('canvas');k.width=k.height=16;face(k,c);b.append(k,c.name.split(' ')[0]);b.className=c.id==sel?'on':'';b.onclick=()=>pickc(c.id);$('#dir').append(b)})}
+function pickc(i){sel=i;hv=-2;dir();ui()}
+$('#ctl').onclick=e=>{const s=e.target.dataset.s;if(s==null)return;speed=+s;[...$('#ctl').children].forEach(b=>b.classList.toggle('on',b==e.target))};
+cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;let b=null,bd=1.4;cits.forEach(c=>{if(c.away)return;const d=Math.hypot(c.px+.5-x,c.py-.2-y);if(d<bd){bd=d;b=c}});if(b)pickc(b.id)};
+
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const Q=[],F=[];let ownerName='',qid=1,busy=false,ready=false,dk='';const fn=c=>c.name.split(' ')[0];
+const TASKS=['Reorganise the shared drive','Draft the weekly newsletter','Audit last month expenses','Prepare a client pitch deck','Clear the support backlog','Redesign the onboarding checklist'];
+const FN=['Ava','Noah','Mina','Leo','Zara','Ivan','Sofia','Kai','Lena','Omar'],LN=['Reyes','Novak','Okoye','Lindqvist','Tan','Moreau','Haddad','Silva'];
+function queue(i){i.id=qid++;if(i.kind=='hire'){prepApp(i.d);if(i.skipHr)i.stage='owner';else{i.stage='hr';i.due=day*1440+gm+60+rnd()*90}hs(cits[i.from],'e','Received application: '+i.text)}else{i.stage='owner';hs(cits[i.from],'e','Filed a request for your signature: '+i.text)}Q.push(i);rq()}
+function addTask(c,d){c.tasks.push({title:d.title,hours:d.hours,reward:d.reward,prog:0});hs(c,'e','New task: '+d.title+' (about '+d.hours+'h)')}
+function rq(){const own=Q.filter(q=>q.stage!='hr'),hr=Q.filter(q=>q.stage=='hr');$('#ac').textContent=own.length?'('+own.length+')':'';
+ $('#aq').innerHTML=own.map(i=>'<div class="q"><b>📄 '+KT[i.kind]+'</b><br>'+esc(fn(cits[i.from]))+': '+esc(i.text)+'<div><button data-doc="'+i.id+'">Review &amp; sign</button></div></div>').join('')+(hr.length?'<div class="q"><i>HR is reviewing '+hr.length+' application(s)…</i></div>':'')||'<i>No documents waiting for your signature.</i>';
+ $('#fl').innerHTML=F.slice(-8).reverse().map(f=>'<div class="q"><button data-filed="'+f.id+'">'+(f.ok?'✔ ':'✘ ')+esc(f.title)+'</button></div>').join('')}
+function rdm(){if(sel<0)return;const c=cits[sel],k=sel+':'+c.dm.length+busy;if(k==dk)return;dk=k;$('#tn').textContent=c.name;
+ $('#dm').innerHTML=c.dm.slice(-14).map(m=>'<p class="'+m.r+'"><b>'+(m.r=='o'?'You':esc(fn(c)))+':</b> '+esc(m.t)+'</p>').join('')+(busy?'<p><i>…</i></p>':'')||'<p><i>Say hello to '+esc(fn(c))+'.</i></p>';$('#dm').scrollTop=1e9}
+function act(c,a){if(!a||!a.type)return;const d=a;
+ if(a.type=='task'&&a.title){const h=Math.max(1,Math.min(6,Math.round(+a.hours||2))),t={title:String(a.title).slice(0,80),hours:h,reward:Math.round(h*350*c.skill)};if(a.ownerRequested)addTask(c,t);else queue({kind:'task',from:c.id,text:'proposes a task: '+t.title+' (about '+h+'h).',d:t})}
+ if(a.type=='raise'&&+a.amount>0){const amt=Math.min(Math.round(+a.amount),Math.round(c.sal*.2));queue({kind:'raise',from:c.id,text:'asks for a $'+amt+'/mo raise. '+String(a.reason||'').slice(0,120),d:{amount:amt}})}
+ if(a.type=='hire'&&a.name)queue({skipHr:1,kind:'hire',from:c.id,text:'application from '+String(a.name).slice(0,28)+' as '+String(a.role||'staff').slice(0,24)+' at $'+(Math.round(+a.salary)||4000)+'/mo.',d:{name:a.name,role:a.role,salary:a.salary,traits:a.traits,pitch:a.pitch}})}
+function ctx(c){return 'Name: '+c.name+'; role: '+c.role+'; salary $'+c.sal+'/mo. Personality 0-1: extroversion '+c.p.ext.toFixed(1)+', work ethic '+c.p.work.toFixed(1)+', ambition '+c.p.amb.toFixed(1)+', patience '+c.p.pat.toFixed(1)+', sociability '+c.p.soc.toFixed(1)+'. It is '+fmt()+' and you are '+(AL[c.act]||c.act)+'. Needs 0-100: food '+Math.round(c.n.food)+', energy '+Math.round(c.n.energy)+', mood '+Math.round(mood(c))+'. Current task: '+(c.tasks[0]?c.tasks[0].title:'none')+'. Colleagues: '+cits.filter(o=>o!=c).map(o=>o.name+' ('+o.role+')').join(', ')+'. Company cash $'+Math.round(cash)+'. Recent events: '+c.hist.slice(-5).map(m=>m.text).join(' | ')}
+async function send(){if(sel<0||busy)return;const c=cits[sel],t=$('#msg').value.trim();if(!t)return;$('#msg').value='';c.dm.push({r:'o',t});busy=true;rdm();let a=null,say;
+ try{const s=window.claude&&await claude.use('sample');if(!s)throw 0;const tr=c.dm.slice(-12).map(m=>(m.r=='o'?'Owner: ':fn(c)+': ')+m.t).join('\n');
+  const j=await s.json('You are '+fn(c)+', an employee at a small company in a simulated office. The Owner of the company is talking to you in person. Stay in character and reply like a real coworker in 1-3 short sentences, no stage directions. You cannot start major actions without the Owner approving them. '+ctx(c)+'\nConversation so far:\n'+tr+'\nReturn ONLY JSON: {"say":"your reply","action":null or {"type":"task","title":"short","hours":1-6,"ownerRequested":true if the Owner asked you to do it} or {"type":"raise","amount":monthly dollars,"reason":"..."} or {"type":"hire","name":"","role":"","salary":number,"traits":{"ext":0-1,"work":0-1,"amb":0-1,"pat":0-1,"soc":0-1},"pitch":"..."} (hire only if you are the HR officer and the Owner wants to recruit)}',{cache:false});
+  say=j.say;a=j.action;ready=true}catch(e){say=pick(['Sure, boss. Let me think about it.','Got it. Anything else?','Hmm, let me get back to you on that.']);if(e&&e.code=='not_granted')say+=' (Live replies are off: permission to ask Claude was not granted.)'}
+ c.dm.push({r:'w',t:String(say||'...')});busy=false;act(c,a);rdm()}
+async function report(c,d){let tx='Finished: '+d.title+'.';if(ready&&!catching)try{const s=await claude.use('sample'),j=await s.json('You are '+fn(c)+', '+c.role+'. You just finished the task "'+d.title+'" for your boss. Report in 2 short sentences what you delivered. Return ONLY JSON {"say":"..."}',{cache:false,modelTier:'quick'});tx=j.say||tx}catch(e){}c.dm.push({r:'w',t:tx});hs(c,'e','Task complete: '+d.title);rdm()}
+async function askHR(){const role=$('#hrole').value.trim();if(!role||busy)return;const hr=cits.find(c=>c.role.includes('HR'))||cits[0];if(cits.length>=12){hs(hr,'e','No free desks left for new hires.');return}busy=true;$('#hrole').value='';let L;
+ try{const s=window.claude&&await claude.use('sample');if(!s)throw 0;const j=await s.json('You are an HR officer at a small company. The Owner asked you to recruit: "'+role+'". Current team: '+cits.map(c=>c.name+' ('+c.role+')').join(', ')+'. Propose 2 realistic, different candidates. Return ONLY JSON {"candidates":[{"name":"full name","role":"job title","salary":monthly dollars 2500-9000,"traits":{"ext":0-1,"work":0-1,"amb":0-1,"pat":0-1,"soc":0-1},"pitch":"one sentence on why they fit"}]}',{cache:false});L=j.candidates;ready=true}catch(e){}
+ if(!Array.isArray(L)||!L.length)L=[0,1].map(()=>({name:pick(FN)+' '+pick(LN),role,salary:3500+Math.round(rnd()*30)*100,traits:{},pitch:'Local candidate for '+role+'. Live pitches need permission to ask Claude.'}));
+ L.slice(0,2).forEach(d=>queue({kind:'hire',from:hr.id,text:'application from '+String(d.name).slice(0,28)+' as '+String(d.role||role).slice(0,24)+' at $'+(Math.round(+d.salary)||4000)+'/mo.',d}));busy=false;rdm()}
+function hire(d,by){const i=cits.length,t=d.traits||{},k=v=>Math.max(.05,Math.min(1,+v||rnd()));
+ const c={id:i,name:String(d.name).slice(0,28),role:String(d.role||'Staff').slice(0,24),sal:Math.max(2500,Math.min(12000,Math.round(+d.salary)||4000)),money:500,tx:20,ty:23,px:20,py:23,path:[],act:'idle',idle:1,t:0,d:1,obj:null,rel:{},hist:[],tasks:[],dm:[],away:false,say:null,acc:i%3,p:{ext:k(t.ext),work:k(t.work),amb:k(t.amb),pat:k(t.pat),soc:k(t.soc)},skill:.6+rnd()*.5,n:{food:80,energy:85,social:60,fun:70},c:[SK[i%4],pick(HR),SH[i%8]]};
+ cits.push(c);hs(c,'e','Joined the company, recruited by '+fn(by)+'.');hs(by,'e',c.name+' hired as '+c.role+'.');dir()}
+function dailyProposals(){if(Q.length>=10)return;cits.forEach(c=>{if(Q.length>=10)return;if(Q.some(q=>q.from==c.id)||c.p.amb<.5||rnd()>.4)return;
+ if(rnd()<.3&&mood(c)>45&&c.sal<9000){const amount=Math.round(c.sal*.08/50)*50;queue({kind:'raise',from:c.id,text:'asks for a $'+amount+'/mo raise after a solid stretch of work.',d:{amount}})}
+ else{const title=pick(TASKS),hours=2+Math.floor(rnd()*3);queue({kind:'task',from:c.id,text:'proposes a task: '+title+' (about '+hours+'h).',d:{title,hours,reward:Math.round(hours*350*c.skill)}})}})}
+const KT={task:'Task Request Form',raise:'Salary Adjustment Request',hire:'Job Application & HR Recommendation'};
+const ROLES=['Software developer','Graphic designer','Sales rep','Accountant','Support agent','Marketing associate'],COVER=['I enjoy solving problems and learning fast.','I have followed your company and would love to help it grow.','Reliable, organised and ready to start right away.'];
+const dsk=p=>[p.work>.6&&'Reliable under deadlines',p.ext>.6?'Strong communicator':'Works independently',p.amb>.6&&'Career-driven',p.pat>.6&&'Patient with clients',p.soc>.6&&'Team player'].filter(Boolean).join(', ');
+const fr=(l,v)=>'<div class="fr"><span>'+l+'</span><b>'+esc(v)+'</b></div>';
+function prepApp(d){const k=v=>Math.max(.05,Math.min(1,+v||rnd())),t=d.traits||{};d.tr={ext:k(t.ext),work:k(t.work),amb:k(t.amb),pat:k(t.pat),soc:k(t.soc)};d.traits=d.tr;d.exp=d.exp||1+Math.floor(rnd()*9);d.salary=Math.round(+d.salary)||4000;
+ const sc=(d.tr.work+d.tr.pat+d.tr.soc+d.tr.amb)/4,same=cits.filter(c=>c.role==d.role).length;d.stars=Math.max(1,Math.min(5,Math.round(sc*5)));
+ d.rec=(sc>.6?'Strong candidate. I recommend hiring.':sc>.45?'Decent candidate. I recommend hiring with a trial period.':'Weak fit. Passing it to you for your decision.')+(same?' We already have '+same+' in this role.':'')+(d.salary>7000?' The salary ask is high.':'');d.pitch=d.pitch||'I am excited to join the team.'}
+function applicants(){if(cits.length+Q.filter(q=>q.kind=='hire').length>=12||Q.length>=10||rnd()>.5)return;const hr=cits.find(c=>c.role.includes('HR'))||cits[0],role=pick(ROLES),name=pick(FN)+' '+pick(LN),salary=3300+Math.round(rnd()*35)*100;
+ queue({kind:'hire',from:hr.id,text:'application from '+name+' for '+role+' at $'+salary+'/mo.',d:{name,role,salary,traits:{},pitch:pick(COVER)}})}
+function body(it){const c=cits[it.from],d=it.d;
+ if(it.kind=='task')return fr('Requested by',c.name+' ('+c.role+')')+fr('Task',d.title)+fr('Estimated effort',d.hours+' hours')+fr('Expected revenue','$'+d.reward)+fr('Current workload',c.tasks.length+' active task(s)')+'<p class="pp">'+esc(it.text)+'</p>';
+ if(it.kind=='raise')return fr('Employee',c.name+' ('+c.role+')')+fr('Current salary','$'+c.sal+'/mo')+fr('Requested increase','+$'+d.amount+'/mo')+fr('New salary','$'+(c.sal+d.amount)+'/mo')+fr('Mood / energy',Math.round(mood(c))+' / '+Math.round(c.n.energy))+'<p class="pp">'+esc(it.text)+'</p>';
+ return fr('Applicant',d.name)+fr('Position',d.role)+fr('Expected salary','$'+d.salary+'/mo')+fr('Experience',d.exp+' years')+fr('Skills',dsk(d.tr))+'<p class="pp"><b>Cover note:</b> '+esc(d.pitch)+'</p><div class="rec"><b>HR recommendation ('+esc(c.name)+'):</b> '+'★'.repeat(d.stars)+'☆'.repeat(5-d.stars)+'<br>'+esc(d.rec)+'</div>'}
+function openDoc(id,filed){const it=filed?F.find(f=>f.id==id):Q.find(q=>q.id==id);if(!it)return;const el=$('#doc'),c=cits[it.from],kind=it.kind,sub=filed?it.sub:(kind=='hire'?it.d.name:c.name),html=filed?it.html:body(it);
+ el.innerHTML='<div class="paper">'+(filed?'<div class="stamp '+(it.ok?'ok':'no')+'">'+(it.ok?'APPROVED':'REJECTED')+'</div>':'')+'<div class="lh">LIVING CORPORATION</div><div class="ti">'+KT[kind]+'</div><div class="meta">Document no. '+String(id).padStart(4,'0')+' · '+(filed?it.date:fmt())+'</div>'+html
+ +'<div class="sigs"><div>'+(kind=='hire'?'Applicant':'Submitted by')+'<span class="cur">'+esc(sub)+'</span></div><div>Owner signature'+(filed?'<span class="cur">'+esc(it.sig||'')+'</span>':'<span class="cur" id="sp">'+esc(ownerName)+'</span>')+'</div></div>'
+ +(filed?(it.note?'<p class="pp"><b>Owner note:</b> '+esc(it.note)+'</p>':'')+'<div class="acts"><button class="x" data-x="1">Close</button></div>'
+ :'<p class="pp"><input id="sg" value="'+esc(ownerName)+'" placeholder="Type your full name to sign" maxlength="40" aria-label="Owner signature"></p><textarea id="nt" rows="2" placeholder="Optional note to the employee" maxlength="200" aria-label="Note"></textarea><div class="acts"><button id="bok" data-ok="'+id+'">Sign &amp; approve</button><button class="no" data-no="'+id+'">Reject</button><button class="x" data-x="1">Close</button></div>')+'</div>';
+ el.hidden=false;el.scrollTop=0;if(!filed)$('#bok').disabled=!ownerName}
+function sign(id,ok){const i=Q.findIndex(q=>q.id==id);if(i<0)return;const it=Q[i],c=cits[it.from],name=$('#sg').value.trim(),note=$('#nt').value.trim();if(ok&&!name)return;
+ if(ok&&it.kind=='hire'&&cits.length>=12){$('#bok').textContent='No free desks';return}
+ const html=body(it),sub=it.kind=='hire'?it.d.name:c.name,title=KT[it.kind]+': '+sub;if(name)ownerName=name;
+ if(ok){if(it.kind=='task')addTask(c,it.d);else if(it.kind=='raise'){c.sal+=it.d.amount;c.n.fun=cl(c.n.fun+15);hs(c,'e','Raise approved: now $'+c.sal+'/mo.')}else hire(it.d,c)}
+ else{hs(c,'e','Owner rejected: '+it.text);if(it.kind=='raise')c.n.fun=cl(c.n.fun-15)}
+ if(note)hs(c,'e','Owner note: '+note);F.push({id:it.id,kind:it.kind,title,sub,html,ok,sig:name,note,date:fmt()});if(F.length>30)F.shift();Q.splice(i,1);rq();dk='';openDoc(it.id,true)}
+$('#aq').onclick=e=>{const id=+e.target.dataset.doc;if(id)openDoc(id)};$('#fl').onclick=e=>{const id=+e.target.dataset.filed;if(id)openDoc(id,true)};
+$('#doc').onclick=e=>{const t=e.target,d=t.dataset;if(d.x||t.id=='doc')$('#doc').hidden=true;else if(d.ok)sign(+d.ok,true);else if(d.no)sign(+d.no,false)};
+$('#doc').oninput=e=>{if(e.target.id=='sg'){$('#sp').textContent=e.target.value;$('#bok').disabled=!e.target.value.trim()}};
+addEventListener('keydown',e=>{if(e.key=='Escape')$('#doc').hidden=true});
+$('#send').onclick=send;$('#msg').onkeydown=e=>{if(e.key=='Enter')send()};$('#hire').onclick=askHR;$('#hrole').onkeydown=e=>{if(e.key=='Enter')askHR()};
+$('#assign').onclick=()=>{if(sel<0)return;const t=$('#task').value.trim();if(!t)return;$('#task').value='';const c=cits[sel],h=+$('#th').value||3;addTask(c,{title:t.slice(0,80),hours:h,reward:Math.round(h*350*c.skill)});c.dm.push({r:'w',t:'On it, boss. I will work on "'+t.slice(0,60)+'" at my desk.'});rdm()};
+rq();
+build();dir();draw();
+let U=null,col=null,catching=false,lastT=Date.now(),acc=0;
+const dur=t=>t>=3600?(t/3600).toFixed(1)+' h':Math.round(t/60)+' min';
+function snap(){return JSON.stringify({v:1,ts:Date.now(),gm,day,cash,rev,qid,Q,F,ownerName,cits:cits.map(c=>{const o={...c};delete o.obj;delete o.partner;delete o.convo;delete o.path;delete o.say;o.hist=c.hist.slice(-30);o.dm=c.dm.slice(-20);return o})})}
+function apply(st){gm=st.gm;day=st.day;cash=st.cash;rev=st.rev;qid=st.qid;Q.length=0;Q.push(...st.Q);F.length=0;F.push(...(st.F||[]));ownerName=st.ownerName||'';objs.forEach(o=>o.u=null);cits.length=0;
+ st.cits.forEach(o=>{const c={...o,path:[],obj:null,partner:null,convo:null,say:null};c.px=c.tx;c.py=c.ty;if(!(c.act=='sleep'&&c.away)){c.act='idle';c.idle=1;c.away=false}cits.push(c)})}
+async function save(){if(!col||catching)return;try{await col.doc('world').set({s:snap()})}catch(e){}}
+async function catchUp(sec){catching=true;const c0=cash,d0=day,q0=qid,tot=Math.min(sec,72*3600)*16/60,b=$('#away');let left=tot;
+ while(left>=1){const k=Math.min(Math.floor(left),2500);for(let i=0;i<k;i++)step(1);left-=k;if(sec>300){b.hidden=false;b.textContent='Catching up on '+dur(sec)+' away… '+Math.round(100-left/tot*100)+'%'}await new Promise(r=>setTimeout(r))}
+ if(left>0)step(left);catching=false;lastT=Date.now();
+ if(sec>300){b.hidden=false;b.textContent='While you were away ('+dur(sec)+'): '+(day-d0)+' game day(s) passed, cash '+(cash>=c0?'+':'-')+'$'+Math.abs(Math.round(cash-c0)).toLocaleString()+', '+(qid-q0)+' new request(s) waiting for you. Tap to dismiss.'}else b.hidden=true;rq();dir();dk=''}
+$('#away').onclick=()=>{$('#away').hidden=true};
+function loop(){const now=Date.now(),el=(now-lastT)/1000;lastT=now;
+ if(!catching){if(el>60)catchUp(el);else{const gmin=el*16/60,n=Math.max(1,Math.ceil(gmin));for(let i=0;i<n;i++)step(gmin/n)}}
+ draw();acc+=el;if(acc>.25){acc=0;ui()}requestAnimationFrame(loop)}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});addEventListener('pagehide',save);
+(async()=>{try{const u=window.claude&&await claude.use('user'),d=window.claude&&await claude.use('db');
+ if(u&&d){const id=await u.id();if(id){col=d.collection('data/users/'+id);const sn=await col.doc('world').get();if(sn.exists){const st=JSON.parse(sn.data().s);apply(st);const sec=(Date.now()-st.ts)/1000;if(sec>30)await catchUp(sec)}}}}catch(e){}
+ lastT=Date.now();rq();dir();ui();requestAnimationFrame(loop);setInterval(save,15000)})();
+</script></body></html>
