@@ -1,280 +1,319 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Living Corporation</title>
-<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Living Corporation</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600&display=swap">
 <style>
-:root{--bg:#1b2240;--ink:#f3f1e8;--panel:#e2a56f;--pink:#3b2412;--btn:#3a4272;--btn2:#1a1d38;--hi:#ffd166;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c0f1c}}
-:root[data-theme="dark"]{--bg:#0c0f1c}
-*{box-sizing:border-box}html,body{margin:0}
-body{background:radial-gradient(ellipse at top,#26305a,var(--bg) 70%) fixed;color:var(--ink);font:13px/1.4 Silkscreen,ui-monospace,monospace;padding:14px;min-height:100%}
-.wrap{max-width:1000px;margin:0 auto}
-h1{font-size:clamp(30px,6.5vw,58px);margin:6px 0 2px;text-align:center;letter-spacing:2px;text-shadow:4px 4px 0 #000,-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000}
-.sub{text-align:center;font-size:12px;opacity:.85;margin-bottom:12px}
-.bar{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;align-items:center;margin-bottom:10px;font-size:12px}
-.bar button{font:inherit;background:var(--btn);color:#fff;border:3px solid var(--btn2);box-shadow:inset 0 0 0 2px #5a64a0;padding:3px 10px;cursor:pointer}
-.bar button.on{background:var(--hi);color:#222}
-button:focus-visible{outline:3px solid #fff;outline-offset:2px}
-.frame{border:10px solid #c9cde0;outline:4px solid #4a4f72;background:#0b0c15;padding:6px;display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:6px}
-@media(max-width:760px){.frame{grid-template-columns:1fr}}
-canvas#cv{display:block;width:100%;height:auto;image-rendering:pixelated;cursor:pointer;background:#000}
-#side{background:var(--panel);color:var(--pink);padding:12px;font-size:11px;max-height:460px;overflow:hidden;display:flex;flex-direction:column}
-#side h2{margin:0 0 2px;font-size:14px}
-#hist{overflow:auto;margin-top:6px;flex:1;min-height:120px}
-#hist p{margin:0 0 6px;padding-bottom:5px;border-bottom:1px dashed #b07c4c}#hist i{opacity:.65;font-style:normal;font-size:10px}
-#hist .t{font-style:italic;opacity:.8}#hist .e{font-weight:700}
-.nb{display:flex;align-items:center;gap:6px;margin:2px 0}.nb b{width:52px;font-weight:400}.nb u{flex:1;height:7px;background:#b9854f;text-decoration:none}.nb u s{display:block;height:100%;text-decoration:none}
-#dir{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
-#dir button{font:inherit;font-size:12px;color:#fff;background:var(--btn);border:4px solid var(--btn2);box-shadow:inset 0 0 0 2px #5a64a0;padding:6px 12px 6px 8px;display:flex;gap:7px;align-items:center;cursor:pointer}
-#dir button.on{border-color:var(--hi)}#dir canvas{image-rendering:pixelated;width:24px;height:24px}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}@media(max-width:760px){.cols{grid-template-columns:1fr}}
-.cols section{background:#e2a56f;color:#3b2412;border:4px solid #1a1d38;padding:10px;font-size:11px}
-.cols h3{margin:0 0 6px;font-size:13px}
-#aq{height:140px}#fl{max-height:72px;overflow:auto;margin-bottom:6px}#dm{height:170px}#dm,#aq{overflow:auto;background:#f3d9b6;padding:6px;margin-bottom:6px}
-#dm p{margin:0 0 5px}#dm .o{text-align:right}#dm .w{color:#1c3a6e}
-.q{border-bottom:1px dashed #b07c4c;padding:4px 0}.q button,.row2 button{font:inherit;background:var(--btn);color:#fff;border:2px solid var(--btn2);padding:2px 10px;cursor:pointer;margin-top:3px}
-.row2{display:flex;gap:4px;margin-top:4px}.row2 input,.row2 select{flex:1;min-width:0;font:12px ui-monospace,monospace;padding:5px;border:2px solid #1a1d38;background:#fff;color:#222}.row2 select{flex:0 0 64px}.row2 button{margin:0}
-.away{background:#ffd166;color:#222;border:3px solid #1a1d38;padding:8px 10px;margin-bottom:10px;cursor:pointer;font:12px/1.4 ui-monospace,monospace}
-#doc{position:fixed;inset:0;background:rgba(5,6,15,.72);z-index:50;overflow:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 12px calc(16px + env(safe-area-inset-bottom,0px))}
-.paper{position:relative;max-width:560px;margin:0 auto;background:#fbf6e6;color:#2b2418;padding:22px 24px;border:1px solid #cdbf98;box-shadow:0 8px 0 rgba(0,0,0,.35);font:13px/1.5 Georgia,'Times New Roman',serif}
-.paper .lh{font:700 15px Silkscreen,monospace;letter-spacing:1px;border-bottom:3px double #2b2418;padding-bottom:6px}
-.paper .ti{font:700 18px Georgia,serif;margin:10px 0 2px}.paper .meta{font-size:11px;color:#7a6c4a;margin-bottom:10px}
-.fr{display:flex;gap:8px;border-bottom:1px solid #d9ccaa;padding:3px 0}.fr span{width:130px;color:#7a6c4a;flex:none}.fr b{font-weight:600}
-.pp{margin:8px 0}.rec{background:#efe6c8;border-left:4px solid #8a6d2f;padding:6px 8px;margin:8px 0}
-.sigs{display:flex;gap:16px;margin-top:16px}.sigs>div{flex:1;border-top:1px solid #2b2418;padding-top:3px;font-size:11px;color:#7a6c4a;min-height:58px}
-.cur{font:italic 22px 'Segoe Script','Brush Script MT','Lucida Handwriting',cursive;color:#1c3a8a;display:block;line-height:1.3}
-.paper input,.paper textarea{width:100%;font:inherit;padding:5px;border:1px solid #b9ab84;background:#fffdf5;color:#2b2418}
-.paper .acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.paper button{font:700 12px Silkscreen,monospace;padding:7px 12px;border:3px solid #1a1d38;background:#2f9e4f;color:#fff;cursor:pointer}.paper button.no{background:#c0392b}.paper button.x{background:#6a6783}.paper button:disabled{opacity:.45;cursor:not-allowed}
-.stamp{position:absolute;right:20px;top:64px;transform:rotate(-14deg);border:4px solid;padding:2px 12px;font:700 22px Silkscreen,monospace;opacity:.88}.stamp.ok{color:#2f9e4f}.stamp.no{color:#c0392b}
-.note{font:12px/1.5 ui-monospace,monospace;opacity:.7;max-width:80ch;margin:18px auto 0;text-align:center}
-</style></head><body><div class="wrap">
-<h1>LIVING CORPORATION</h1><div class="sub">A virtual office with autonomous digital employees…</div>
-<div class="bar"><span id="clk"></span><span id="cash"></span><span id="rev"></span><span id="ctl">1 game day = 1h 30m, always running</span></div>
-<div id="away" hidden></div>
-<div class="frame"><canvas id="cv" width="640" height="400" aria-label="Pixel office with eight AI employees"></canvas>
-<div id="side"><div id="info">Click on a character to see chat history.</div><div id="hist"></div></div></div>
-<div id="dir"></div>
-<div class="cols"><section><h3>Talk to <span id="tn">a worker</span></h3><div id="dm"><p><i>Select a worker to talk to them.</i></p></div><div class="row2"><input id="msg" placeholder="Say something…" maxlength="300" aria-label="Message"><button id="send">Send</button></div><div class="row2"><input id="task" placeholder="Assign a task…" maxlength="80" aria-label="Task"><select id="th" aria-label="Hours"><option value="1">1h</option><option value="3" selected>3h</option><option value="6">6h</option></select><button id="assign">Assign</button></div></section>
-<section><h3>Approvals <span id="ac"></span></h3><div id="aq"></div><div id="fl"></div><div class="row2"><input id="hrole" placeholder="Ask HR to hire a…" maxlength="60" aria-label="Role to hire"><button id="hire">Ask HR</button></div></section></div>
-<p class="note">Prototype: employees decide what to do from needs, personality and time of day. Chats, task reports and HR pitches are written live by Claude once you allow it; without permission, simple fallback replies are used. Daily life runs on its own, but task requests, raise requests and job applications arrive as forms that need your signature, and HR screens applications first. Your world saves to your account automatically. When you come back after time away, the page catches up on everything that would have happened (up to 3 days), at 1 game day per 1h 30m.</p></div>
-<div id="doc" hidden></div>
-<script>
-const $=s=>document.querySelector(s),cv=$('#cv'),g=cv.getContext('2d');
-const W=40,H=25,T=16;let X=g;const R=(x,y,w,h,c)=>{X.fillStyle=c;X.fillRect(x|0,y|0,w,h)};
-const DR=new Set(['12,6','12,7','25,6','25,7','5,10','6,10','18,10','19,10','32,10','33,10','20,24']);
-const wl=(x,y)=>y<=1||x==0||x==W-1||y==H-1||((x==12||x==25)&&y<10)||y==10,isWall=(x,y)=>wl(x,y)&&!DR.has(x+','+y);
-const objs=[],blocked=new Set(),A=(k,a)=>a.forEach(([x,y])=>objs.push({k,x,y,u:null}));
-A('work',[[5,5],[22,5],[4,15],[8,15],[12,15],[4,20],[8,20],[12,20],[16,15],[16,20],[20,15],[20,20]]);
-A('eat',[[28,7],[32,7],[36,7],[22,19],[23,19]]);
-A('rest',[[28,3],[29,3],[33,3],[34,3],[28,21],[29,21],[35,13],[36,13]]);
-A('sleep',[[20,24]]);
-const DEC=[[1,2,3,1,'shelf'],[10,3,1,1,'plant'],[10,8,1,1,'cab'],[15,4,6,3,'table'],[26,2,1,1,'vend'],[37,2,1,1,'fridge'],[38,9,1,1,'plant'],[1,12,1,1,'plant'],[1,22,1,1,'plant'],[16,12,1,1,'plant'],[16,22,1,1,'plant'],[18,12,1,1,'cooler'],[20,12,2,1,'copier'],[26,15,8,4,'conf'],[38,11,1,4,'shelf']];
-const bl=(x,y,w,h)=>{for(let i=0;i<w;i++)for(let j=0;j<h;j++)blocked.add((x+i)+','+(y+j))};
-DEC.forEach(d=>bl(...d));objs.forEach(o=>{if(o.k=='work')bl(o.x,o.y-1,2,1);if(o.k=='eat')bl(o.x,o.y-1,1,1)});
-function path(sx,sy,tx,ty){const q=[[sx,sy]],pv=new Map([[sx+','+sy,null]]);
- while(q.length){const [x,y]=q.shift();if(x==tx&&y==ty)break;for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy,k=nx+','+ny;if(nx<0||ny<0||nx>=W||ny>=H||isWall(nx,ny)||blocked.has(k)||pv.has(k))continue;pv.set(k,[x,y]);q.push([nx,ny])}}
- if(!pv.has(tx+','+ty))return[];const o=[];let c=[tx,ty];while(c&&!(c[0]==sx&&c[1]==sy)){o.unshift(c);c=pv.get(c[0]+','+c[1])}return o}
-// ---- static background
-const bg=document.createElement('canvas');bg.width=640;bg.height=400;
-function plant(x,y){R(x+4,y+9,8,6,'#8a4f2a');R(x+3,y+3,10,7,'#2f9e4f');R(x+5,y,6,5,'#46c46a');R(x+2,y+5,3,3,'#3cb35e');R(x+11,y+6,3,3,'#3cb35e')}
-function drawDec([tx,ty,w,h,k]){const x=tx*T,y=ty*T,pw=w*T,ph=h*T;
- if(k=='plant')plant(x,y);
- if(k=='shelf'){R(x,y,pw,ph,'#5b3a22');R(x,y,pw,2,'#7d5330');for(let i=0;i<pw;i+=3)R(x+i+1,y+(pw>16?3:2)+(i%2?0:1),2,Math.min(ph,12)-3,['#d9534f','#4dabf7','#ffd43b','#51cf66','#c77dff'][(i/3|0)%5])}
- if(k=='cab'){R(x+1,y+3,14,12,'#8e93a8');R(x+1,y+3,14,2,'#b4b9cc');R(x+3,y+7,10,1,'#4b4f63');R(x+3,y+11,10,1,'#4b4f63')}
- if(k=='table'){R(x,y+2,pw,ph-2,'#7a4a24');R(x+2,y+4,pw-4,ph-8,'#a8693a');R(x+4,y+6,pw-8,3,'#c4824c');R(x+20,y+16,10,8,'#fff');R(x+50,y+22,9,6,'#f3e9a0')}
- if(k=='conf'){R(x,y+2,pw,ph-2,'#8a4a1c');R(x+3,y+5,pw-6,ph-10,'#d98a45');R(x+6,y+8,pw-12,4,'#eaa766');R(x+30,y+26,14,10,'#fff');R(x+80,y+30,10,8,'#fff');R(x+60,y+16,5,5,'#444')}
- if(k=='vend'){R(x+1,y+1,14,15,'#2d6cdf');R(x+3,y+3,10,7,'#bfe6ff');R(x+4,y+12,8,2,'#111')}
- if(k=='fridge'){R(x+1,y,14,16,'#e8ecf2');R(x+1,y+6,14,1,'#8b93a3');R(x+12,y+3,1,2,'#6a7284');R(x+12,y+9,1,4,'#6a7284')}
- if(k=='cooler'){R(x+4,y,8,7,'#9fd8f5');R(x+3,y+7,10,9,'#dfe4ef');R(x+6,y+9,3,2,'#2d6cdf')}
- if(k=='copier'){R(x+1,y+3,30,12,'#c6cad6');R(x+1,y+3,30,3,'#e5e8f0');R(x+4,y+8,12,3,'#7a8094');R(x+22,y+8,6,2,'#3cb35e')}}
-function desk(x,y){R(x+1,y+3,30,12,'#7d5330');R(x+1,y+3,30,9,'#b07a48');R(x+2,y+4,28,2,'#c9955f');R(x+11,y-3,11,8,'#1c1f33');R(x+12,y-2,9,5,'#2a5a7a');R(x+15,y+5,3,2,'#1c1f33');R(x+5,y+8,8,3,'#e8e4d0');R(x+24,y+7,4,4,'#d9534f')}
-function build(){X=bg.getContext('2d');let s=3;const r=()=>(s=(s*16807)%2147483647)/2147483647;
- for(let y=0;y<H;y++)for(let x=0;x<W;x++){const px=x*T,py=y*T;
-  if(wl(x,y)&&!DR.has(x+','+y)){R(px,py,T,T,y<=1?(y?'#44456a':'#2c2d48'):'#3b3b57');if(y>=2||x==0||x==W-1){R(px,py,T,2,'#6f6f95');R(px,py+T-2,T,2,'#2c2d44')}else if(y==1){R(px,py+11,T,5,'#33344f');R(px,py+11,T,1,'#7a7ba0')}continue}
-  const z=y<10?(x<12?0:x<25?1:2):3;
-  if(z==0){R(px,py,T,T,'#b98a5e');R(px,py+7,T,1,'#a07048');R(px,py+15,T,1,'#a07048');R(px+((y%2)?4:11),py,1,8,'#a07048');R(px+((y%2)?11:4),py+8,1,8,'#a07048')}
-  if(z==1){R(px,py,T,T,(x+y)&1?'#6a79a8':'#6373a2');R(px,py,T,1,'#7d8cba')}
-  if(z==2){R(px,py,T,T,(x+y)&1?'#e8dcc3':'#dfd1b5');R(px,py,T,1,'#c9b999')}
-  if(z==3){R(px,py,T,T,(x+y)&1?'#4b8b88':'#448079');R(px,py,T,1,'#3a6f6a');R(px,py,1,T,'#3a6f6a')}
-  for(let i=0;i<3;i++)R(px+r()*14,py+r()*14,1,1,'rgba(0,0,0,.12)')}
- [4,8,16,20,29,34].forEach(wx=>{const x=wx*T;R(x-1,3,26,15,'#cfd3e6');R(x+1,5,10,11,'#9fd3f0');R(x+13,5,10,11,'#9fd3f0');R(x+1,5,10,3,'#c8ecff');R(x+13,5,10,3,'#c8ecff')});
- R(6*T,5*T,6*T,3*T,'#7c2f3a');R(6*T+3,5*T+3,6*T-6,3*T-6,'#a34452');
- R(3*T,6*T,0,0,'#000');
- DEC.forEach(drawDec);
- objs.forEach(o=>{const x=o.x*T,y=o.y*T;
-  if(o.k=='work'){desk(x,y-T);R(x+3,y+6,10,8,'#2e3262');R(x+3,y+6,10,2,'#4a509a')}
-  if(o.k=='eat'){const ty=y-T;R(x+1,ty+4,14,10,'#8a5a2e');R(x+2,ty+4,12,8,'#d8a064');R(x+5,ty+6,6,4,'#fff');R(x+6,ty+7,4,2,'#e9552e')}
-  if(o.k=='rest'){R(x,y+4,T,11,'#992d22');R(x,y+1,T,5,'#7a221a');R(x+1,y+7,14,7,'#d94a3b');R(x+1,y+7,14,2,'#ea6a5b')}
-  if(o.k=='sleep'){R(x,y,T,T,'#26a65b');R(x+3,y+2,10,12,'#1a7d44');R(x+3,y+2,10,2,'#fff')}})
- X=g}
-// ---- sprites
-function figure(x,y,c,o){const sk=c.c[0],hr=c.c[1],sh=c.c[2],sit=o.sit,oy=sit?3:0,l=o.w&&(o.f>>2&1)?1:0,bob=o.w&&!l?1:0,d=o.d;y-=bob;
- if(!o.av){R(x+3,y+14+bob,10,2,'rgba(0,0,0,.25)');if(!sit){R(x+4,y+11,3,4+l,'#323559');R(x+9,y+11,3,4+(1-l),'#323559');R(x+4,y+14+l,3,2,'#111');R(x+9,y+15-l,3,1,'#111')}}
- const t=o.av?y+2:y+4+oy;if(!o.av){R(x+3,t,10,7,sh);R(x+1+0,t+1,2,6,sh);R(x+13,t+1,2,6,sh);R(x+1,t+6,2,2,sk);R(x+13,t+6,2,2,sk);if(c.acc==1)R(x+7,t,2,6,'#d33')}
- const hy=t-7;R(x+4,hy,8,7,sk);R(x+4,hy,8,3,hr);R(x+3,hy+1,1,4,hr);R(x+12,hy+1,1,4,hr);
- if(d==1)R(x+4,hy,8,7,hr);else if(d>=2){R(x+(d==2?9:3),hy,4,6,hr);R(x+(d==2?5:10),hy+3,1,2,'#222')}else{R(x+6,hy+3,1,2,'#222');R(x+9,hy+3,1,2,'#222');if(c.acc==2)R(x+5,hy+2,6,1,'#111')}}
-function face(cv2,c){const k=cv2.getContext('2d');k.clearRect(0,0,16,16);X=k;figure(0,6,c,{av:1,d:0});X=g}
-// ---- citizens
-let seed=11;const rnd=()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296},pick=a=>a[Math.floor(rnd()*a.length)];
-const SK=['#f2c9a0','#d9a073','#a86f48','#f6d7b8'],HR=['#2b2233','#6b3a1f','#d9a21b','#c4452e','#3b5bdb','#222'],SH=['#e8638b','#4dabf7','#51cf66','#ffd43b','#9775fa','#ff922b','#20c997','#adb5bd'];
-const people=[['Marcus Hale','Manager',6400],['Jenna Cole','Designer',4700],['Pablo Ruiz','Accountant',4900],['Dina Wu','Marketer',4300],['Oscar Lind','HR officer',5200],['Rita Shah','Sales rep',4100],['Theo Brandt','Support lead',3900],['Yuki Mori','Analyst',5400]];
-const cits=people.map((p,i)=>{let x,y;do{x=14+Math.floor(rnd()*10);y=12+Math.floor(rnd()*10)}while(isWall(x,y)||blocked.has(x+','+y));
- return{id:i,name:p[0],role:p[1],sal:p[2],money:400+Math.floor(rnd()*900),tx:x,ty:y,px:x,py:y,path:[],act:'idle',idle:i*.7,t:0,d:0,obj:null,rel:{},hist:[],tasks:[],dm:[],away:false,say:null,acc:i%3,
- p:{ext:.15+rnd()*.85,work:.2+rnd()*.8,amb:rnd(),pat:.15+rnd()*.85,soc:.15+rnd()*.85},skill:.6+rnd()*.5,
- n:{food:55+rnd()*40,energy:60+rnd()*35,social:40+rnd()*50,fun:45+rnd()*45},c:[SK[i%4],pick(HR),SH[i]]}});
-let gm=7.5*60,day=0,speed=1,sel=-1,cash=50000,rev=0;const DN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-const fmt=()=>DN[day%7]+' '+String(Math.floor(gm/60)).padStart(2,'0')+':'+String(Math.floor(gm%60)).padStart(2,'0');
-const hs=(c,k,text,who)=>{c.hist.push({d:'D'+(day+1)+' '+fmt().slice(4),k,who,text});if(c.hist.length>80)c.hist.shift()};
-const cl=v=>Math.max(0,Math.min(100,v)),mood=c=>(c.n.food+c.n.energy+c.n.social+c.n.fun)/4,eff=c=>(.4*c.n.energy+.3*c.n.food+.3*mood(c))/100;
-const rel=v=>v>=75?'close friend':v>=45?'friend':v>=20?'friendly':v<=-15?'rival':'acquaintance';
-const TOP=[['Did you see the numbers this quarter?','Barely. Coffee is the only thing keeping me going.'],['What are you having for lunch?','Leftovers. Again. And you?'],['Any plans for the weekend?','Sleeping. Maybe more sleeping.'],['The printer jammed on me again.','It jams on everyone. It has a vendetta.'],['I have an idea for the next project.','Tell me more, but not before coffee.'],['I heard the boss is in a mood today.','When is the boss not in a mood?'],['Nice weather out there, right?','I would not know. I live under fluorescent lights.'],['Do you like your desk?','It has a nice view of another desk.']];
-const GR=['Can people stop chewing so loudly?','This place runs on bad coffee.'],GR2=['Is this really necessary right now?','Make it quick.'],FU=['Ha, fair point.','Right? Anyway.','I will think about it.','Funny you say that.'],CL=['Talk later!','Back to the grind.','Good chat. See you around.','Okay, I need a snack now.'];
-const ARG=[['You took credit for my work.','That is not what happened!','Do not walk away from me.','I am talking to HR.'],['You are always late with reports.','And you never read them.','Unbelievable.','Whatever.']];
-function convo(a,b,x){if(x)return pick(ARG);const t=pick(TOP);return[a.p.pat<.3&&rnd()<.5?pick(GR):t[0],b.p.pat<.3&&rnd()<.4?pick(GR2):t[1],pick(FU),pick(CL)]}
-function release(c){if(c.obj){c.obj.u=null;c.obj=null}}
-function partner(c){let b=null,bs=-9;for(const o of cits){if(o==c||!['idle','work','rest'].includes(o.act))continue;const s=(c.rel[o.id]||0)/50+(1-Math.abs(c.p.ext-o.p.ext))*.6+o.p.soc*.4+rnd()*.5-Math.hypot(c.tx-o.tx,c.ty-o.ty)/40;if(s>bs){bs=s;b=o}}return b}
-function goto(c,x,y,then){c.path=path(c.tx,c.ty,x,y);c.act='go';c.then=then;c.t=0}
-const TH={eat:'Getting hungry. Heading for the break room.',sleep:'Exhausted. Time to go home.',work:'Time to get some work done.',rest:'I need a breather.'};
-function go(c,a){if(a=='chat'){const p=partner(c);if(!p)return false;c.partner=p;hs(c,'t','Feeling chatty. Going to find '+p.name.split(' ')[0]+'.');goto(c,p.tx,p.ty,'chat');return true}
- const f=objs.filter(o=>o.k==a&&(a=='sleep'||!o.u)).sort((u,v)=>Math.hypot(u.x-c.tx,u.y-c.ty)-Math.hypot(v.x-c.tx,v.y-c.ty))[0];if(!f)return false;
- if(a!='sleep'){f.u=c.id;c.obj=f}hs(c,'t',TH[a]);goto(c,f.x,f.y,a);return true}
-function decide(c){const h=gm/60,wd=day%7<5,n=c.n,nd=v=>(100-v)/100,wk=(wd&&((h>=9&&h<17)||(c.p.work>.8&&h>=17&&h<18)))||(c.tasks.length>0&&h>=9&&h<20);
- const S=[['eat',nd(n.food)**2*2.2+(n.food<55&&((h>=11.5&&h<14)||(h>=18&&h<20))?.3:0)],['sleep',nd(n.energy)**2*1.8+((h>=22||h<6)?.9:0)-((h>=8&&h<20&&n.energy>35)?.5:0)],
- ['work',wk?(.8*(.4+c.p.work)*((n.food>25&&n.energy>20)?1:.2)+c.p.amb*.1+(c.tasks.length?.35:0)):0],['rest',nd(n.fun)**1.5*(1.3-c.p.work*.5)+(h>=18?.15:0)],['chat',nd(n.social)**1.4*(.5+c.p.soc)*1.2]];
- S.forEach(s=>s[1]+=rnd()*.12);S.sort((a,b)=>b[1]-a[1]);for(const [a,s] of S)if(s>=.12&&go(c,a))return;c.act='idle';c.idle=3+rnd()*8}
-function endAct(c){release(c);c.away=false;c.act='idle';c.idle=1+rnd()*3}
-function startAct(c){c.act=c.then;c.t=0;if(c.act=='sleep'){c.away=true;return}
- if(c.act=='chat'){const p=c.partner;if(!p||['sleep','eat'].includes(p.act)||p.away||Math.hypot(p.tx-c.tx,p.ty-c.ty)>2){c.act='idle';c.idle=2;return}
-  release(p);p.path=[];p.act='chat';p.t=0;p.partner=c;c.dur=p.dur=70+rnd()*30;c.li=-1;
-  const x=rnd()<.05+(1-c.p.pat)*(1-p.p.pat)*.15,old=c.rel[p.id]||0,d=x?-12:3+4*(c.p.soc+p.p.soc)/2;c.rel[p.id]=old+d;p.rel[c.id]=(p.rel[c.id]||0)+d;c.convo=convo(c,p,x);
-  const n=old+d;if(rel(n)!=rel(old)&&d>0){const m=c.name.split(' ')[0]+' and '+p.name.split(' ')[0]+' are now '+rel(n)+'s.';hs(c,'e',m);hs(p,'e',m)}
-  if(x){const m='Argument between '+c.name.split(' ')[0]+' and '+p.name.split(' ')[0]+'.';hs(c,'e',m);hs(p,'e',m)}}}
-function move(c,dt){let d=12*dt;while(d>0&&c.path.length){const n=c.path[0],dx=n[0]-c.px,dy=n[1]-c.py,ds=Math.hypot(dx,dy);
- if(ds<=d){c.px=n[0];c.py=n[1];c.tx=n[0];c.ty=n[1];c.path.shift();d-=ds}else{c.px+=dx/ds*d;c.py+=dy/ds*d;d=0}
- c.d=Math.abs(dx)>Math.abs(dy)?(dx<0?2:3):(dy<0?1:0)}}
-function tick(c,dt){const n=c.n,a=c.act;n.food-=(a=='sleep'?.05:.11)*dt;n.social-=(a=='sleep'?.03:.07)*dt;n.fun-=(a=='work'?.08:a=='sleep'?.02:.05)*dt;
- if(a=='sleep')n.energy+=.28*dt;else n.energy-=(a=='work'?.1:.06)*dt;for(const k in n)n[k]=cl(n[k]);
- if(c.path.length){move(c,dt);return}const h=gm/60;c.t+=dt;
- if(a=='go'){startAct(c);if(c.act=='work'||c.act=='eat'||c.act=='rest')c.d=c.act=='rest'?0:1}
- else if(a=='idle'){if((c.idle-=dt)<=0)decide(c)}
- else if(a=='work'){const e=eff(c),r=1.2*c.skill*(.6+.4*e)*dt;rev+=r;cash+=r;const tk=c.tasks[0];if(tk){tk.prog+=dt*e;if(tk.prog>=tk.hours*60){c.tasks.shift();rev+=tk.reward;cash+=tk.reward;report(c,tk)}}
-  if(gm>=(c.tasks.length?20:17+(c.p.work>.8?1:0))*60||(day%7>4&&!c.tasks.length)||n.food<15||n.energy<10)endAct(c)}
- else if(a=='eat'){n.food=cl(n.food+1.7*dt);if(n.food>=95||c.t>60){c.money-=8;endAct(c)}}
- else if(a=='sleep'){if(n.energy>=96||(c.t>180&&h>=6&&h<11&&n.energy>70))endAct(c)}
- else if(a=='rest'){n.fun=cl(n.fun+.6*dt);n.energy=cl(n.energy+.06*dt);if(c.t>=45||n.food<12)endAct(c)}
- else if(a=='chat'){n.social=cl(n.social+.6*dt);const p=c.partner;
-  if(c.convo){const i=Math.min(3,Math.floor(c.t/(c.dur/4)));if(i!=c.li){c.li=i;const sp=i%2?p:c,ls=i%2?c:p,tx=c.convo[i];sp.say=tx;ls.say=null;hs(sp,'s',tx,sp.name.split(' ')[0]);hs(ls,'s',tx,sp.name.split(' ')[0])}}
-  if(c.t>=c.dur){c.say=null;if(p)p.say=null;c.convo=null;c.act='idle';c.idle=.5}}}
-function eod(){let pay=0;cits.forEach(c=>{const s=c.sal/30;pay+=s;c.money+=s});cash-=pay+300;rev=0}
-function step(dt){const pg=gm;gm+=dt;if(pg<540&&gm>=540&&day%7<5)dailyProposals();if(pg<600&&gm>=600&&day%7<5)applicants();
- for(const i of Q)if(i.stage=='hr'&&day*1440+gm>=i.due){i.stage='owner';hs(cits[i.from],'e','Forwarded the application of '+i.d.name+' to the Owner with my recommendation.');rq()}
- if(gm>=1440){gm-=1440;day++;eod()}cits.forEach(c=>tick(c,dt))}
-// ---- render
-function bubble(c){const x0=c.px*T+8,y0=c.py*T-14;g.font='7px monospace';const ws=c.say.split(' '),L=[];let s='';ws.forEach(w=>{if((s+' '+w).length>22){L.push(s);s=w}else s=s?s+' '+w:w});L.push(s);
- const w=Math.max(...L.map(l=>g.measureText(l).width))+8,h=L.length*9+4,x=Math.max(2,Math.min(640-w-2,x0-w/2)),y=y0-h;
- R(x-1,y-1,w+2,h+2,'#222');R(x,y,w,h,'#fff');R(x0-2,y+h,4,3,'#fff');g.fillStyle='#222';L.forEach((l,i)=>g.fillText(l,x+4,y+9+i*9))}
-let fr=0;function draw(){X=g;g.drawImage(bg,0,0);
- objs.forEach(o=>{if(o.k=='work'&&o.u!=null&&cits[o.u].act=='work')R(o.x*T+12,(o.y-1)*T-2,9,5,'#8fe9ff')});
- [...cits].filter(c=>!c.away).sort((a,b)=>a.py-b.py).forEach(c=>{const sit=!c.path.length&&['work','eat','rest'].includes(c.act),w=c.path.length>0,off=c.act=='chat'?(c.id%2?3:-3):0;
-  if(c.id==sel){R(c.px*T+1+off,c.py*T+13,14,3,'#ffd166')}
-  figure(c.px*T+off,c.py*T,c,{sit,w,f:fr,d:c.d});
-  const e={work:'💻',eat:'🍴',rest:'🛋️'}[c.act];if(e&&sit&&!c.say){g.font='8px sans-serif';g.fillText(e,c.px*T+3,c.py*T-12)}});
- cits.forEach(c=>{if(c.say&&!c.away)bubble(c)});
- const h=gm/60,a=h<6?.38:h<8?.38*(8-h)/2:h<18?0:h<20?.38*(h-18)/2:.38;if(a>0){g.fillStyle='rgba(12,16,60,'+a+')';g.fillRect(0,0,640,400)}fr++}
-const bc=v=>v>50?'#2f9e4f':v>25?'#e0a21b':'#d9534f',nb=(l,v,col)=>'<div class="nb"><b>'+l+'</b><u><s style="width:'+Math.round(v)+'%;background:'+(col||bc(v))+'"></s></u></div>';
-const AL={go:'walking',idle:'thinking',work:'working',eat:'eating',sleep:'at home, sleeping',rest:'relaxing',chat:'chatting'};
-let hl=-1,hv=-2;
-function ui(){$('#clk').textContent=fmt();$('#cash').textContent='Cash $'+Math.round(cash).toLocaleString();$('#rev').textContent='Today +$'+Math.round(rev);
- if(sel<0)return;const c=cits[sel];rdm();
- $('#info').innerHTML='<h2>'+c.name+'</h2>'+c.role+' · $'+c.sal.toLocaleString()+'/mo<br>Now: '+(c.act=='go'?'heading to '+c.then:AL[c.act])+(c.tasks[0]?'<br>Task: '+esc(c.tasks[0].title)+nb('Done',Math.min(100,c.tasks[0].prog/(c.tasks[0].hours*.6)),'#3b5bdb'):'')+'<div style="margin-top:6px">'+nb('Food',c.n.food)+nb('Energy',c.n.energy)+nb('Social',c.n.social)+nb('Fun',c.n.fun)+nb('Mood',mood(c))+'</div>';
- if(hv!=sel||hl!=c.hist.length){hv=sel;hl=c.hist.length;$('#hist').innerHTML=c.hist.slice().reverse().map(m=>'<p class="'+m.k+'"><i>'+m.d+'</i><br>'+(m.k=='s'?esc(m.who)+': “'+esc(m.text)+'”':m.k=='t'?'(thinking) '+esc(m.text):esc(m.text))+'</p>').join('')||'<p>No messages yet.</p>'}}
-function dir(){$('#dir').innerHTML='';cits.forEach(c=>{const b=document.createElement('button'),k=document.createElement('canvas');k.width=k.height=16;face(k,c);b.append(k,c.name.split(' ')[0]);b.className=c.id==sel?'on':'';b.onclick=()=>pickc(c.id);$('#dir').append(b)})}
-function pickc(i){sel=i;hv=-2;dir();ui()}
-$('#ctl').onclick=e=>{const s=e.target.dataset.s;if(s==null)return;speed=+s;[...$('#ctl').children].forEach(b=>b.classList.toggle('on',b==e.target))};
-cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;let b=null,bd=1.4;cits.forEach(c=>{if(c.away)return;const d=Math.hypot(c.px+.5-x,c.py-.2-y);if(d<bd){bd=d;b=c}});if(b)pickc(b.id)};
+:root{color-scheme:dark;--bg:#1b2233;--sf:#2b374d;--tx:#e8ecf5;--mu:#9aa7c0;--bd:#4a5878;--ac:#e6c477;--ok:#8fd19e;--no:#f0968c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 
-const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
-const Q=[],F=[];let ownerName='',qid=1,busy=false,ready=false,dk='';const fn=c=>c.name.split(' ')[0];
-const TASKS=['Reorganise the shared drive','Draft the weekly newsletter','Audit last month expenses','Prepare a client pitch deck','Clear the support backlog','Redesign the onboarding checklist'];
-const FN=['Ava','Noah','Mina','Leo','Zara','Ivan','Sofia','Kai','Lena','Omar'],LN=['Reyes','Novak','Okoye','Lindqvist','Tan','Moreau','Haddad','Silva'];
-function queue(i){i.id=qid++;if(i.kind=='hire'){prepApp(i.d);if(i.skipHr)i.stage='owner';else{i.stage='hr';i.due=day*1440+gm+60+rnd()*90}hs(cits[i.from],'e','Received application: '+i.text)}else{i.stage='owner';hs(cits[i.from],'e','Filed a request for your signature: '+i.text)}Q.push(i);rq()}
-function addTask(c,d){c.tasks.push({title:d.title,hours:d.hours,reward:d.reward,prog:0});hs(c,'e','New task: '+d.title+' (about '+d.hours+'h)')}
-function rq(){const own=Q.filter(q=>q.stage!='hr'),hr=Q.filter(q=>q.stage=='hr');$('#ac').textContent=own.length?'('+own.length+')':'';
- $('#aq').innerHTML=own.map(i=>'<div class="q"><b>📄 '+KT[i.kind]+'</b><br>'+esc(fn(cits[i.from]))+': '+esc(i.text)+'<div><button data-doc="'+i.id+'">Review &amp; sign</button></div></div>').join('')+(hr.length?'<div class="q"><i>HR is reviewing '+hr.length+' application(s)…</i></div>':'')||'<i>No documents waiting for your signature.</i>';
- $('#fl').innerHTML=F.slice(-8).reverse().map(f=>'<div class="q"><button data-filed="'+f.id+'">'+(f.ok?'✔ ':'✘ ')+esc(f.title)+'</button></div>').join('')}
-function rdm(){if(sel<0)return;const c=cits[sel],k=sel+':'+c.dm.length+busy;if(k==dk)return;dk=k;$('#tn').textContent=c.name;
- $('#dm').innerHTML=c.dm.slice(-14).map(m=>'<p class="'+m.r+'"><b>'+(m.r=='o'?'You':esc(fn(c)))+':</b> '+esc(m.t)+'</p>').join('')+(busy?'<p><i>…</i></p>':'')||'<p><i>Say hello to '+esc(fn(c))+'.</i></p>';$('#dm').scrollTop=1e9}
-function act(c,a){if(!a||!a.type)return;const d=a;
- if(a.type=='task'&&a.title){const h=Math.max(1,Math.min(6,Math.round(+a.hours||2))),t={title:String(a.title).slice(0,80),hours:h,reward:Math.round(h*350*c.skill)};if(a.ownerRequested)addTask(c,t);else queue({kind:'task',from:c.id,text:'proposes a task: '+t.title+' (about '+h+'h).',d:t})}
- if(a.type=='raise'&&+a.amount>0){const amt=Math.min(Math.round(+a.amount),Math.round(c.sal*.2));queue({kind:'raise',from:c.id,text:'asks for a $'+amt+'/mo raise. '+String(a.reason||'').slice(0,120),d:{amount:amt}})}
- if(a.type=='hire'&&a.name)queue({skipHr:1,kind:'hire',from:c.id,text:'application from '+String(a.name).slice(0,28)+' as '+String(a.role||'staff').slice(0,24)+' at $'+(Math.round(+a.salary)||4000)+'/mo.',d:{name:a.name,role:a.role,salary:a.salary,traits:a.traits,pitch:a.pitch}})}
-function ctx(c){return 'Name: '+c.name+'; role: '+c.role+'; salary $'+c.sal+'/mo. Personality 0-1: extroversion '+c.p.ext.toFixed(1)+', work ethic '+c.p.work.toFixed(1)+', ambition '+c.p.amb.toFixed(1)+', patience '+c.p.pat.toFixed(1)+', sociability '+c.p.soc.toFixed(1)+'. It is '+fmt()+' and you are '+(AL[c.act]||c.act)+'. Needs 0-100: food '+Math.round(c.n.food)+', energy '+Math.round(c.n.energy)+', mood '+Math.round(mood(c))+'. Current task: '+(c.tasks[0]?c.tasks[0].title:'none')+'. Colleagues: '+cits.filter(o=>o!=c).map(o=>o.name+' ('+o.role+')').join(', ')+'. Company cash $'+Math.round(cash)+'. Recent events: '+c.hist.slice(-5).map(m=>m.text).join(' | ')}
-async function send(){if(sel<0||busy)return;const c=cits[sel],t=$('#msg').value.trim();if(!t)return;$('#msg').value='';c.dm.push({r:'o',t});busy=true;rdm();let a=null,say;
- try{const s=window.claude&&await claude.use('sample');if(!s)throw 0;const tr=c.dm.slice(-12).map(m=>(m.r=='o'?'Owner: ':fn(c)+': ')+m.t).join('\n');
-  const j=await s.json('You are '+fn(c)+', an employee at a small company in a simulated office. The Owner of the company is talking to you in person. Stay in character and reply like a real coworker in 1-3 short sentences, no stage directions. You cannot start major actions without the Owner approving them. '+ctx(c)+'\nConversation so far:\n'+tr+'\nReturn ONLY JSON: {"say":"your reply","action":null or {"type":"task","title":"short","hours":1-6,"ownerRequested":true if the Owner asked you to do it} or {"type":"raise","amount":monthly dollars,"reason":"..."} or {"type":"hire","name":"","role":"","salary":number,"traits":{"ext":0-1,"work":0-1,"amb":0-1,"pat":0-1,"soc":0-1},"pitch":"..."} (hire only if you are the HR officer and the Owner wants to recruit)}',{cache:false});
-  say=j.say;a=j.action;ready=true}catch(e){say=pick(['Sure, boss. Let me think about it.','Got it. Anything else?','Hmm, let me get back to you on that.']);if(e&&e.code=='not_granted')say+=' (Live replies are off: permission to ask Claude was not granted.)'}
- c.dm.push({r:'w',t:String(say||'...')});busy=false;act(c,a);rdm()}
-async function report(c,d){let tx='Finished: '+d.title+'.';if(ready&&!catching)try{const s=await claude.use('sample'),j=await s.json('You are '+fn(c)+', '+c.role+'. You just finished the task "'+d.title+'" for your boss. Report in 2 short sentences what you delivered. Return ONLY JSON {"say":"..."}',{cache:false,modelTier:'quick'});tx=j.say||tx}catch(e){}c.dm.push({r:'w',t:tx});hs(c,'e','Task complete: '+d.title);rdm()}
-async function askHR(){const role=$('#hrole').value.trim();if(!role||busy)return;const hr=cits.find(c=>c.role.includes('HR'))||cits[0];if(cits.length>=12){hs(hr,'e','No free desks left for new hires.');return}busy=true;$('#hrole').value='';let L;
- try{const s=window.claude&&await claude.use('sample');if(!s)throw 0;const j=await s.json('You are an HR officer at a small company. The Owner asked you to recruit: "'+role+'". Current team: '+cits.map(c=>c.name+' ('+c.role+')').join(', ')+'. Propose 2 realistic, different candidates. Return ONLY JSON {"candidates":[{"name":"full name","role":"job title","salary":monthly dollars 2500-9000,"traits":{"ext":0-1,"work":0-1,"amb":0-1,"pat":0-1,"soc":0-1},"pitch":"one sentence on why they fit"}]}',{cache:false});L=j.candidates;ready=true}catch(e){}
- if(!Array.isArray(L)||!L.length)L=[0,1].map(()=>({name:pick(FN)+' '+pick(LN),role,salary:3500+Math.round(rnd()*30)*100,traits:{},pitch:'Local candidate for '+role+'. Live pitches need permission to ask Claude.'}));
- L.slice(0,2).forEach(d=>queue({kind:'hire',from:hr.id,text:'application from '+String(d.name).slice(0,28)+' as '+String(d.role||role).slice(0,24)+' at $'+(Math.round(+d.salary)||4000)+'/mo.',d}));busy=false;rdm()}
-function hire(d,by){const i=cits.length,t=d.traits||{},k=v=>Math.max(.05,Math.min(1,+v||rnd()));
- const c={id:i,name:String(d.name).slice(0,28),role:String(d.role||'Staff').slice(0,24),sal:Math.max(2500,Math.min(12000,Math.round(+d.salary)||4000)),money:500,tx:20,ty:23,px:20,py:23,path:[],act:'idle',idle:1,t:0,d:1,obj:null,rel:{},hist:[],tasks:[],dm:[],away:false,say:null,acc:i%3,p:{ext:k(t.ext),work:k(t.work),amb:k(t.amb),pat:k(t.pat),soc:k(t.soc)},skill:.6+rnd()*.5,n:{food:80,energy:85,social:60,fun:70},c:[SK[i%4],pick(HR),SH[i%8]]};
- cits.push(c);hs(c,'e','Joined the company, recruited by '+fn(by)+'.');hs(by,'e',c.name+' hired as '+c.role+'.');dir()}
-function dailyProposals(){if(Q.length>=10)return;cits.forEach(c=>{if(Q.length>=10)return;if(Q.some(q=>q.from==c.id)||c.p.amb<.5||rnd()>.4)return;
- if(rnd()<.3&&mood(c)>45&&c.sal<9000){const amount=Math.round(c.sal*.08/50)*50;queue({kind:'raise',from:c.id,text:'asks for a $'+amount+'/mo raise after a solid stretch of work.',d:{amount}})}
- else{const title=pick(TASKS),hours=2+Math.floor(rnd()*3);queue({kind:'task',from:c.id,text:'proposes a task: '+title+' (about '+hours+'h).',d:{title,hours,reward:Math.round(hours*350*c.skill)}})}})}
-const KT={task:'Task Request Form',raise:'Salary Adjustment Request',hire:'Job Application & HR Recommendation'};
-const ROLES=['Software developer','Graphic designer','Sales rep','Accountant','Support agent','Marketing associate'],COVER=['I enjoy solving problems and learning fast.','I have followed your company and would love to help it grow.','Reliable, organised and ready to start right away.'];
-const dsk=p=>[p.work>.6&&'Reliable under deadlines',p.ext>.6?'Strong communicator':'Works independently',p.amb>.6&&'Career-driven',p.pat>.6&&'Patient with clients',p.soc>.6&&'Team player'].filter(Boolean).join(', ');
-const fr=(l,v)=>'<div class="fr"><span>'+l+'</span><b>'+esc(v)+'</b></div>';
-function prepApp(d){const k=v=>Math.max(.05,Math.min(1,+v||rnd())),t=d.traits||{};d.tr={ext:k(t.ext),work:k(t.work),amb:k(t.amb),pat:k(t.pat),soc:k(t.soc)};d.traits=d.tr;d.exp=d.exp||1+Math.floor(rnd()*9);d.salary=Math.round(+d.salary)||4000;
- const sc=(d.tr.work+d.tr.pat+d.tr.soc+d.tr.amb)/4,same=cits.filter(c=>c.role==d.role).length;d.stars=Math.max(1,Math.min(5,Math.round(sc*5)));
- d.rec=(sc>.6?'Strong candidate. I recommend hiring.':sc>.45?'Decent candidate. I recommend hiring with a trial period.':'Weak fit. Passing it to you for your decision.')+(same?' We already have '+same+' in this role.':'')+(d.salary>7000?' The salary ask is high.':'');d.pitch=d.pitch||'I am excited to join the team.'}
-function applicants(){if(cits.length+Q.filter(q=>q.kind=='hire').length>=12||Q.length>=10||rnd()>.5)return;const hr=cits.find(c=>c.role.includes('HR'))||cits[0],role=pick(ROLES),name=pick(FN)+' '+pick(LN),salary=3300+Math.round(rnd()*35)*100;
- queue({kind:'hire',from:hr.id,text:'application from '+name+' for '+role+' at $'+salary+'/mo.',d:{name,role,salary,traits:{},pitch:pick(COVER)}})}
-function body(it){const c=cits[it.from],d=it.d;
- if(it.kind=='task')return fr('Requested by',c.name+' ('+c.role+')')+fr('Task',d.title)+fr('Estimated effort',d.hours+' hours')+fr('Expected revenue','$'+d.reward)+fr('Current workload',c.tasks.length+' active task(s)')+'<p class="pp">'+esc(it.text)+'</p>';
- if(it.kind=='raise')return fr('Employee',c.name+' ('+c.role+')')+fr('Current salary','$'+c.sal+'/mo')+fr('Requested increase','+$'+d.amount+'/mo')+fr('New salary','$'+(c.sal+d.amount)+'/mo')+fr('Mood / energy',Math.round(mood(c))+' / '+Math.round(c.n.energy))+'<p class="pp">'+esc(it.text)+'</p>';
- return fr('Applicant',d.name)+fr('Position',d.role)+fr('Expected salary','$'+d.salary+'/mo')+fr('Experience',d.exp+' years')+fr('Skills',dsk(d.tr))+'<p class="pp"><b>Cover note:</b> '+esc(d.pitch)+'</p><div class="rec"><b>HR recommendation ('+esc(c.name)+'):</b> '+'★'.repeat(d.stars)+'☆'.repeat(5-d.stars)+'<br>'+esc(d.rec)+'</div>'}
-function openDoc(id,filed){const it=filed?F.find(f=>f.id==id):Q.find(q=>q.id==id);if(!it)return;const el=$('#doc'),c=cits[it.from],kind=it.kind,sub=filed?it.sub:(kind=='hire'?it.d.name:c.name),html=filed?it.html:body(it);
- el.innerHTML='<div class="paper">'+(filed?'<div class="stamp '+(it.ok?'ok':'no')+'">'+(it.ok?'APPROVED':'REJECTED')+'</div>':'')+'<div class="lh">LIVING CORPORATION</div><div class="ti">'+KT[kind]+'</div><div class="meta">Document no. '+String(id).padStart(4,'0')+' · '+(filed?it.date:fmt())+'</div>'+html
- +'<div class="sigs"><div>'+(kind=='hire'?'Applicant':'Submitted by')+'<span class="cur">'+esc(sub)+'</span></div><div>Owner signature'+(filed?'<span class="cur">'+esc(it.sig||'')+'</span>':'<span class="cur" id="sp">'+esc(ownerName)+'</span>')+'</div></div>'
- +(filed?(it.note?'<p class="pp"><b>Owner note:</b> '+esc(it.note)+'</p>':'')+'<div class="acts"><button class="x" data-x="1">Close</button></div>'
- :'<p class="pp"><input id="sg" value="'+esc(ownerName)+'" placeholder="Type your full name to sign" maxlength="40" aria-label="Owner signature"></p><textarea id="nt" rows="2" placeholder="Optional note to the employee" maxlength="200" aria-label="Note"></textarea><div class="acts"><button id="bok" data-ok="'+id+'">Sign &amp; approve</button><button class="no" data-no="'+id+'">Reject</button><button class="x" data-x="1">Close</button></div>')+'</div>';
- el.hidden=false;el.scrollTop=0;if(!filed)$('#bok').disabled=!ownerName}
-function sign(id,ok){const i=Q.findIndex(q=>q.id==id);if(i<0)return;const it=Q[i],c=cits[it.from],name=$('#sg').value.trim(),note=$('#nt').value.trim();if(ok&&!name)return;
- if(ok&&it.kind=='hire'&&cits.length>=12){$('#bok').textContent='No free desks';return}
- const html=body(it),sub=it.kind=='hire'?it.d.name:c.name,title=KT[it.kind]+': '+sub;if(name)ownerName=name;
- if(ok){if(it.kind=='task')addTask(c,it.d);else if(it.kind=='raise'){c.sal+=it.d.amount;c.n.fun=cl(c.n.fun+15);hs(c,'e','Raise approved: now $'+c.sal+'/mo.')}else hire(it.d,c)}
- else{hs(c,'e','Owner rejected: '+it.text);if(it.kind=='raise')c.n.fun=cl(c.n.fun-15)}
- if(note)hs(c,'e','Owner note: '+note);F.push({id:it.id,kind:it.kind,title,sub,html,ok,sig:name,note,date:fmt()});if(F.length>30)F.shift();Q.splice(i,1);rq();dk='';openDoc(it.id,true)}
-$('#aq').onclick=e=>{const id=+e.target.dataset.doc;if(id)openDoc(id)};$('#fl').onclick=e=>{const id=+e.target.dataset.filed;if(id)openDoc(id,true)};
-$('#doc').onclick=e=>{const t=e.target,d=t.dataset;if(d.x||t.id=='doc')$('#doc').hidden=true;else if(d.ok)sign(+d.ok,true);else if(d.no)sign(+d.no,false)};
-$('#doc').oninput=e=>{if(e.target.id=='sg'){$('#sp').textContent=e.target.value;$('#bok').disabled=!e.target.value.trim()}};
-addEventListener('keydown',e=>{if(e.key=='Escape')$('#doc').hidden=true});
-$('#send').onclick=send;$('#msg').onkeydown=e=>{if(e.key=='Enter')send()};$('#hire').onclick=askHR;$('#hrole').onkeydown=e=>{if(e.key=='Enter')askHR()};
-$('#assign').onclick=()=>{if(sel<0)return;const t=$('#task').value.trim();if(!t)return;$('#task').value='';const c=cits[sel],h=+$('#th').value||3;addTask(c,{title:t.slice(0,80),hours:h,reward:Math.round(h*350*c.skill)});c.dm.push({r:'w',t:'On it, boss. I will work on "'+t.slice(0,60)+'" at my desk.'});rdm()};
-rq();
-build();dir();draw();
-let U=null,col=null,catching=false,lastT=Date.now(),acc=0;
-const dur=t=>t>=3600?(t/3600).toFixed(1)+' h':Math.round(t/60)+' min';
-function snap(){return JSON.stringify({v:1,ts:Date.now(),gm,day,cash,rev,qid,Q,F,ownerName,cits:cits.map(c=>{const o={...c};delete o.obj;delete o.partner;delete o.convo;delete o.path;delete o.say;o.hist=c.hist.slice(-30);o.dm=c.dm.slice(-20);return o})})}
-function apply(st){gm=st.gm;day=st.day;cash=st.cash;rev=st.rev;qid=st.qid;Q.length=0;Q.push(...st.Q);F.length=0;F.push(...(st.F||[]));ownerName=st.ownerName||'';objs.forEach(o=>o.u=null);cits.length=0;
- st.cits.forEach(o=>{const c={...o,path:[],obj:null,partner:null,convo:null,say:null};c.px=c.tx;c.py=c.ty;if(!(c.act=='sleep'&&c.away)){c.act='idle';c.idle=1;c.away=false}cits.push(c)})}
-async function save(){if(!col||catching)return;try{await col.doc('world').set({s:snap()})}catch(e){}}
-async function catchUp(sec){catching=true;const c0=cash,d0=day,q0=qid,tot=Math.min(sec,72*3600)*16/60,b=$('#away');let left=tot;
- while(left>=1){const k=Math.min(Math.floor(left),2500);for(let i=0;i<k;i++)step(1);left-=k;if(sec>300){b.hidden=false;b.textContent='Catching up on '+dur(sec)+' away… '+Math.round(100-left/tot*100)+'%'}await new Promise(r=>setTimeout(r))}
- if(left>0)step(left);catching=false;lastT=Date.now();
- if(sec>300){b.hidden=false;b.textContent='While you were away ('+dur(sec)+'): '+(day-d0)+' game day(s) passed, cash '+(cash>=c0?'+':'-')+'$'+Math.abs(Math.round(cash-c0)).toLocaleString()+', '+(qid-q0)+' new request(s) waiting for you. Tap to dismiss.'}else b.hidden=true;rq();dir();dk=''}
-$('#away').onclick=()=>{$('#away').hidden=true};
-function loop(){const now=Date.now(),el=(now-lastT)/1000;lastT=now;
- if(!catching){if(el>60)catchUp(el);else{const gmin=el*16/60,n=Math.max(1,Math.ceil(gmin));for(let i=0;i<n;i++)step(gmin/n)}}
- draw();acc+=el;if(acc>.25){acc=0;ui()}requestAnimationFrame(loop)}
-document.addEventListener('visibilitychange',()=>{if(document.hidden)save()});addEventListener('pagehide',save);
-(async()=>{try{const u=window.claude&&await claude.use('user'),d=window.claude&&await claude.use('db');
- if(u&&d){const id=await u.id();if(id){col=d.collection('data/users/'+id);const sn=await col.doc('world').get();if(sn.exists){const st=JSON.parse(sn.data().s);apply(st);const sec=(Date.now()-st.ts)/1000;if(sec>30)await catchUp(sec)}}}}catch(e){}
- lastT=Date.now();rq();dir();ui();requestAnimationFrame(loop);setInterval(save,15000)})();
+
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.35 "Pixelify Sans",ui-monospace,Menlo,monospace;padding-bottom:64px}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:#38465f;border-bottom:3px solid var(--bd);padding:8px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;z-index:5}
+header b{font-size:16px;color:var(--ac);text-transform:uppercase}.st{color:var(--mu);font-size:13px;flex:1}
+main{padding:12px;max-width:760px;margin:auto}
+nav{position:fixed;bottom:0;left:0;right:0;background:#38465f;border-top:3px solid var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav button{flex:1;border:0;background:none;color:var(--mu);padding:10px 2px;font-size:12px}nav button.on{color:var(--ac);font-weight:600}
+.c{background:var(--sf);border:3px solid var(--bd);box-shadow:4px 4px 0 #0e131c;padding:10px;margin-bottom:12px}
+button,select,input,textarea{font:inherit;color:var(--tx)}
+.b{border:3px solid #8a6a3a;background:#e6c477;color:#1b2233;padding:4px 10px;margin:2px 5px 5px 0;box-shadow:3px 3px 0 #0e131c}.b.g{background:#93d3a2;border-color:#4c8a5c;color:#12301b}.b.r{background:#e8978e;border-color:#9a4a42;color:#3a0f0b}
+input,select,textarea{background:var(--bg);border:3px solid var(--bd);padding:7px;width:100%;margin:3px 0}
+.m{color:var(--mu);font-size:13px}.tag{display:inline-block;font-size:11px;border:1px solid var(--bd);border-radius:6px;padding:0 6px;margin-right:4px;color:var(--mu)}
+.bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}
+.msg{padding:7px 10px;border-radius:12px;margin:4px 0;max-width:85%;white-space:pre-wrap}.me{background:var(--ac);color:#1b2233;margin-left:auto}.th{background:var(--bg);border:1px solid var(--bd)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}.chips .b{white-space:nowrap}
+h3{margin:14px 0 8px;font-size:15px;color:var(--ac);text-transform:uppercase;letter-spacing:1px}canvas{width:100%;image-rendering:pixelated;border:2px solid var(--bd);border-radius:6px;display:block;background:#000;touch-action:manipulation}pre{white-space:pre-wrap;font:13px/1.4 inherit;margin:4px 0}
+</style></head><body>
+<header><b>Founder HQ</b><span class="st" id="st"></span><button class="b p" onclick="nextDay()">Next day ▶</button><button class="b" onclick="hireSec()">+ Secretaries</button><button class="b" onclick="addFunds()">+ Funds</button></header>
+<main id="main"></main>
+<nav id="nav"></nav>
+<script>
+const $=s=>document.querySelector(s),R=a=>a[Math.floor(Math.random()*a.length)],rnd=(a,b)=>Math.floor(a+Math.random()*(b-a+1)),fmt=n=>Math.round(n).toLocaleString();
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const DEPTS=['Executive','HR','Engineering','Marketing','Finance','R&D'];
+const ROLES={Executive:['CEO','COO'],HR:['HR Manager','HR Specialist'],Engineering:['Engineering Lead','Software Developer'],Marketing:['Marketing Manager','Marketing Specialist'],Finance:['Finance Director','Accountant'],'R&D':['Research Lead','Researcher']};
+const FN='Amelia Ben Chloe Dev Elena Farid Grace Hiro Isla Jonas Kemal Lena Marco Nadia Omar Priya Quinn Rosa Sam Tara Umar Vera Wei Zoe'.split(' '),LN='Adams Brooks Chen Diaz Evans Fischer Gupta Hassan Ito Jensen Khan Lopez Moreau Novak Okafor Patel Reyes Silva Tanaka Walker'.split(' ');
+const PERS=['confident and direct','shy and hesitant','ambitious and political','warm and loyal','cynical but competent','perfectionist and anxious','laid-back and creative'];
+const LV={owner:'Owner-only',approval:'Owner approval',exec:'CEO decides (you stay out)',mgr:'Dept manager decides',auto:'Auto (routine)'};
+const PT={hire:'Hire employee',raise:'Salary increase',promote:'Promotion',dismiss:'Dismissal',purchase:'Equipment purchase',project:'New project',budget:'Budget change',branch:'New branch',expand:'Industry expansion',contract:'Major contract',invest:'Major investment',leave:'Leave request',resign:'Resignation',ext:'Deadline extension',recruit:'Recruitment request'};
+const PERM0={hire:'exec',raise:'mgr',promote:'exec',dismiss:'exec',purchase:'mgr',project:'exec',budget:'exec',branch:'owner',expand:'owner',contract:'owner',invest:'owner',leave:'mgr',ext:'mgr',recruit:'mgr',resign:'exec'};
+let S,tab='office',sel=null,chatKey=null,q='',busy=false;
+let dbDoc=null,svT=0;const save=()=>{try{localStorage.setItem('corp2',JSON.stringify(S))}catch(e){}if(dbDoc&&!svT)svT=setTimeout(()=>{svT=0;try{dbDoc.set({s:JSON.stringify(S),t:Date.now()}).catch(()=>{})}catch(e){}},1500)};
+function person(d,r,l){const b=[4000,5500,8000,14000][l];return{id:'e'+S.nid++,name:R(FN)+' '+R(LN),dept:d,role:r,lvl:l,pers:R(PERS),mood:rnd(55,85),sat:rnd(55,85),prod:rnd(50,90),tech:rnd(45,90),comm:rnd(35,90),att:rnd(88,100),pun:rnd(80,100),exp:rnd(1,15),salary:b+rnd(0,1500),since:S.day,perf:[],warn:0,leave:0}}
+function cand(d){const t=rnd(30,95),c=rnd(25,95);return{id:'c'+S.nid++,name:R(FN)+' '+R(LN),dept:d,role:R(ROLES[d]),edu:R(['BSc','MSc','PhD','Diploma','Self-taught']),exp:rnd(0,14),tech:t,comm:c,pot:rnd(30,98),sal:3500+t*50+rnd(0,2500),pers:R(PERS),amb:R(['wants to lead','wants stability','wants to learn','wants high pay']),pref:R(['remote','on-site','flexible hours']),status:'market',note:''}}
+const fit=c=>Math.round(Math.min(100,c.tech*.45+c.comm*.2+Math.min(c.exp*2,20)+c.pot*.15));
+function init(){S={day:1,cash:500000,inc:0,limit:2000,nid:1,emps:[],cands:[],reqs:[],tasks:[],hist:[],notes:[],chats:{},mem:{},unread:{},recruit:[],perm:{...PERM0}};
+[['Executive','CEO',3],['HR','HR Manager',2],['HR','HR Specialist',1],['Engineering','Engineering Lead',2],['Engineering','Software Developer',1],['Engineering','Software Developer',1],['Marketing','Marketing Manager',2],['Marketing','Marketing Specialist',1],['Finance','Finance Director',2],['Finance','Accountant',1],['R&D','Research Lead',2],['R&D','Researcher',1]].forEach(s=>S.emps.push(person(...s)));
+for(let i=0;i<10;i++)S.cands.push(cand(R(DEPTS.slice(1))));note('Welcome, founder. Your staff will come to you with requests and ideas.')}
+const note=t=>{S.notes.unshift({d:S.day,t})};const emp=id=>S.emps.find(e=>e.id===id);
+const mgr=d=>S.emps.filter(e=>e.dept===d).sort((a,b)=>b.lvl-a.lvl)[0];
+const hlog=t=>S.hist.unshift({d:S.day,t});
+function addMsg(key,f,t){if(f==='them'&&AG[key]){AG[key].say=String(t).slice(0,34);AG[key].sayT=320}(S.chats[key]=S.chats[key]||[]).push({f,t,d:S.day});if(f==='them'&&!(tab==='chat'&&chatKey===key))S.unread[key]=(S.unread[key]||0)+1}
+function remember(id,t){(S.mem[id]=S.mem[id]||[]).push('Day '+S.day+': '+t)}
+async function llm(p){try{if(typeof claude==='undefined')return null;const sm=await claude.use('sample');if(!sm)return null;const r=await sm(p,{cache:false,modelTier:'quick'});return(r.text||'').trim()||null}catch(e){return null}}
+function persona(e){const m=(S.mem[e.id]||[]).slice(-6).join('; ')||'none';return`You are ${e.name}, ${e.role} (${e.dept}) at a corporation owned by the player (the founder). Personality: ${e.pers}. Mood ${e.mood}/100, job satisfaction ${e.sat}/100, ${e.exp} yrs experience. Memories: ${m}. Company facts: cash $${fmt(S.cash)}, ${S.emps.length} staff, day ${S.day}. Stay in character, 1-3 sentences, address the owner respectfully (more formal if junior). Never claim anything was approved or completed unless stated in memories.`}
+async function say(e,ev,key){key=key||e.id;const fb={cynical:'Understood. I’ll make do.',shy:'Oh… okay, sir. Thank you for letting me know.'}[e.pers.split(' ')[0]]||'Understood, sir. I’ll adjust accordingly.';let t=await llm(persona(e)+`\nEvent: ${ev}\nWrite your short reaction/message to the owner.`)||fb;addMsg(key,'them',t);save();if(tab==='chat'||tab==='inbox')render()}
+/* authorization engine */
+function request(type,e,text,data){const r={id:'r'+S.nid++,type,by:e.id,text,data:data||{},status:'Pending',d:S.day,rev:0};const l=S.perm[type];S.reqs.unshift(r);
+if(l==='auto'||(l==='mgr'&&e.lvl>=2)||(l==='exec'&&e.lvl>=3)){r.status='Approved';r.auto=true;hlog(`${PT[type]} by ${e.name} auto-authorised (${LV[l]}): ${text}`);run(r)}else{const dm=l==='exec'?S.emps.filter(x=>x.lvl>=3).sort((a,b)=>b.salary-a.salary)[0]:l==='mgr'?mgr(e.dept):null;if(!(dm&&dm.id!==e.id&&delegDecide(r,dm,e)))note(`${e.name} requests: ${PT[type]}`)}return r}
+function run(r){const e=emp(r.by),d=r.data;
+if(r.type==='hire'){const c=S.cands.find(x=>x.id===d.cid),rc=S.recruit.find(x=>x.id===c.rid);if(rc&&rc.hired>=rc.n){r.status='Cancelled';return}c.status='hired';const n=person(c.dept,c.role,0);Object.assign(n,{name:c.name,tech:c.tech,comm:c.comm,exp:c.exp,pers:c.pers,salary:d.sal,mood:80,sat:75});S.emps.push(n);if(rc){rc.hired++;if(rc.hired>=rc.n)rc.status='filled'}note(`${n.name} joined as ${n.role}. Onboarding complete.`);addMsg(n.id,'them','Good morning, sir. Thank you for the opportunity. I’m ready to start.')}
+else if(r.type==='raise'){e.salary+=d.amt;e.sat=Math.min(100,e.sat+15)}
+else if(r.type==='promote'){e.lvl=Math.min(3,e.lvl+1);e.role=(e.lvl>=2?'Senior ':'')+e.role.replace('Senior ','');e.salary=Math.round(e.salary*1.15);e.sat=Math.min(100,e.sat+20)}
+else if(r.type==='dismiss'){S.emps=S.emps.filter(x=>x.id!==e.id);S.tasks.forEach(t=>{if(t.who===e.id&&!['Completed','Cancelled','Rejected'].includes(t.status))t.who=(mgr(e.dept)||{}).id})}
+else if(r.type==='resign'){S.emps=S.emps.filter(x=>x.id!==e.id);note(e.name+' left the company.')}else if(r.type==='leave'){e.leave=d.days||2}
+else if(r.type==='ext'){const t=S.tasks.find(x=>x.id===d.tid);if(t)t.due+=5}
+else if(r.type==='project'){S.cash-=d.cost;S.tasks.push(task('Project: '+r.text,e.id,6,0,'In Progress'))}
+else if(['purchase','budget'].includes(r.type)){S.cash-=d.cost;e.prod=Math.min(100,e.prod+3)}
+else if(['branch','expand','contract','invest'].includes(r.type)){S.cash-=d.cost;S.inc+=d.cost*.004}
+else if(r.type==='recruit'){S.recruit.push({id:'q'+S.nid++,dept:d.dept,n:d.n,by:e.id,status:'open',hired:0,d:S.day})}
+if(d.tid&&r.type==='budget'){const t=S.tasks.find(x=>x.id===d.tid);if(t){t.status='In Progress';t.log.push('Budget approved')}}}
+function decide(id,act){const r=S.reqs.find(x=>x.id===id),e=emp(r.by)||{id:r.by,name:'HR'};let key=r.by;
+if(act==='ask'){chatKey=r.by;tab='chat';return render(`About your request (${PT[r.type]}): `)}
+if(act==='deleg'){S.perm[r.type]='exec';hlog('Owner delegated '+PT[r.type]+' to executives');return render()}
+if(act==='mod'){const m=prompt('Your modification / instruction (include a new number to change the amount):');if(!m)return;const n=(m.match(/\d[\d,]*/)||[])[0];if(n){const v=+n.replace(/,/g,'');if(r.data.amt!=null)r.data.amt=v;else if(r.data.sal!=null)r.data.sal=v;else if(r.data.cost!=null)r.data.cost=v}r.rev++;r.text+=` [Revised per owner: ${m}]`;hlog(`Owner requested modification of ${PT[r.type]}: ${m}`);remember(r.by,'Owner asked me to modify my request: '+m);say(emp(r.by)||e,`Owner asked you to modify your ${PT[r.type]} request: "${m}". Acknowledge and say you've revised it.`);return render()}
+if(act==='ok'){r.status='Approved';run(r);hlog(`Owner APPROVED ${PT[r.type]}: ${r.text}`);if(emp(r.by)){remember(r.by,'Owner approved my '+PT[r.type]);say(emp(r.by),`Owner approved your ${PT[r.type]} request (${r.text}). React.`)}}
+else{r.status='Rejected';hlog(`Owner REJECTED ${PT[r.type]}: ${r.text}`);if(r.data.cid){const c=S.cands.find(x=>x.id===r.data.cid);c.status='rejected'}if(emp(r.by)){const x=emp(r.by);x.sat=Math.max(0,x.sat+(r.type==='resign'?8:-8));remember(r.by,'Owner rejected my '+PT[r.type]);say(x,`Owner rejected your ${PT[r.type]} request (${r.text}). React naturally and say how you will adjust.`)}}
+save();render()}
+/* tasks */
+function task(text,who,diff,cost,status){return{id:'t'+S.nid++,text,who,diff,cost,status:status||'Pending',prog:0,d:S.day,due:S.day+Math.ceil(diff*1.6)+3,log:[],report:''}}
+function assign(){const t=$('#tt').value.trim(),a=$('#ta').value;if(!t)return;const who=a.startsWith('D:')?(mgr(a.slice(2))||{}).id:a,w=emp(who);if(!w)return;const cost=/expan/i.test(t)?50000:/\bAI\b|software/i.test(t)&&/develop|build/i.test(t)?30000:/campaign/i.test(t)?12000:/equipment|purchase|buy/i.test(t)?8000:/recruit|hire/i.test(t)?2500:0;const k=task(t,who,Math.min(6,2+Math.ceil(t.length/40)),cost);k.dept=a.startsWith('D:')?a.slice(2):w.dept;S.tasks.unshift(k);
+if(t.split(/\s+/).length<4){k.log.push('Asked owner for clarification');addMsg(who,'them','Sir, I received your instruction but I need more detail on scope and expected outcome before I begin. Could you elaborate?');k.status='Pending'}
+else if(cost>S.limit){k.status='Awaiting Approval';request('budget',w,'Budget $'+fmt(cost)+' for task: '+t,{cost,tid:k.id});if(k.status==='Awaiting Approval'&&S.reqs[0].status==='Approved')k.status='In Progress'}
+else{k.status='In Progress';k.prog=20;k.log.push('Accepted by '+w.name)}
+remember(who,'Owner assigned me: '+t);addMsg(who,'them',k.status==='Pending'?'Sir, I need clarification first.':'Understood, sir. I’ll get started and report progress.');save();render()}
+function report(t,w){const a=Math.round(S.emps.reduce((s,e)=>s+e.prod,0)/S.emps.length),rev=S.emps.reduce((s,e)=>s+e.prod*8,0)+S.inc,pay=S.emps.reduce((s,e)=>s+e.salary/30,0);return`Report by ${w.name} (${w.role}), day ${S.day}\nTask: ${t.text}\nData: cash $${fmt(S.cash)}, headcount ${S.emps.length}, avg productivity ${a}%, revenue/day $${fmt(rev)}, payroll/day $${fmt(pay)}, margin ${Math.round((rev-pay)/rev*100)}%.\nLowest morale: ${S.emps.slice().sort((x,y)=>x.sat-y.sat).slice(0,2).map(e=>e.name+' ('+e.sat+')').join(', ')}.\nRecommendation: ${rev-pay<2000?'cut spending and review underperformers':'reinvest part of the margin in hiring and R&D'}.`}
+function review(id,act){const t=S.tasks.find(x=>x.id===id),w=emp(t.who);
+if(act==='ok'){t.status='Completed';const n={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10};const m=t.text.match(/\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\b/i);
+if(t.dept==='HR'&&/recruit|hire/i.test(t.text)){const k=m?(+m[1]||n[m[1].toLowerCase()]):2,d=/market/i.test(t.text)?'Marketing':/financ|account/i.test(t.text)?'Finance':/research/i.test(t.text)?'R&D':'Engineering';S.recruit.push({id:'q'+S.nid++,dept:d,n:k,by:w.id,status:'open',hired:0,d:S.day});t.log.push(`Opened recruitment for ${k} ${d} hires`)}else{S.inc+=t.diff*15;t.log.push('Effect applied: +$'+t.diff*15+'/day revenue')}
+w.sat=Math.min(100,w.sat+4);w.perf.push({d:S.day,s:Math.min(100,70+rnd(0,25)),n:'Delivered: '+t.text.slice(0,40)});remember(w.id,'Owner accepted my work: '+t.text.slice(0,50))}
+else if(act==='back'){const m=prompt('Additional instructions:');if(!m)return;t.status='In Progress';t.prog=60;t.log.push('Owner: '+m);remember(w.id,'Owner sent my work back: '+m);say(w,`Owner sent your finished work back with: "${m}". React.`)}
+else if(act==='rej'){t.status='Rejected';w.sat-=5}else if(act==='can'){t.status='Cancelled'}
+hlog(`Task "${t.text.slice(0,40)}": ${t.status}`);save();render()}
+/* simulation */
+async function nextDay(){if(busy)return;busy=true;S.day++;const E=S.emps;
+const rev=E.reduce((s,e)=>s+(e.leave?0:e.prod*8*(e.mood/100+.3)),0)+S.inc;S.cash+=rev-E.reduce((s,e)=>s+e.salary/30,0);
+E.forEach(e=>{if(e.leave>0)e.leave--;e.sat+=(60-e.sat)*.03;e.mood=Math.max(10,Math.min(100,e.mood+(e.sat-e.mood)*.15+rnd(-4,4)))});
+for(const t of S.tasks.filter(x=>x.status==='In Progress')){const w=emp(t.who);if(!w){t.status='Cancelled';continue}if(w.leave)continue;t.prog=Math.min(100,t.prog+Math.round((w.prod+w.tech)/2/t.diff*1.2*(w.mood/80)));
+if(t.prog>=100){t.status='Under Review';t.report=report(t,w);addMsg(w.id,'them','Sir, the work on “'+t.text.slice(0,50)+'” is ready for your review. The report is attached to the task.');note(w.name+' submitted work for review');const p=await llm(persona(w)+'\nFacts:\n'+t.report+'\nAdd a 2-sentence executive summary of this report, using only these facts.');if(p)t.report+='\nSummary: '+p}
+else if(S.day>t.due&&!S.reqs.some(r=>r.data.tid===t.id&&r.status==='Pending')){t.due=S.day+99;request('ext',w,`Cannot meet deadline for "${t.text.slice(0,40)}" (${t.prog}% done); need 5 more days.`,{tid:t.id});addMsg(w.id,'them','Sir, I have to be honest: we won’t make the deadline. I’ve filed an extension request.')}}
+S.tasks.filter(t=>t.status==='Under Review').forEach(t=>{t.rv=(t.rv||0)+1;if(t.rv>=3){note('Manager auto-accepted: '+t.text.slice(0,40));review(t.id,'ok')}});
+/* HR */
+const hr=S.recruit.filter(x=>x.status==='open'),H=mgr('HR');for(const rc of hr){const pool=()=>S.cands.filter(c=>c.dept===rc.dept&&c.status==='market');while(pool().length<5)S.cands.push(cand(rc.dept));
+pool().sort((a,b)=>fit(b)-fit(a)).slice(0,3).forEach(c=>{c.status='shortlist';c.rid=rc.id;c.note=`HR interview: technical ${c.tech>70?'strong':'average'}, communication ${c.comm>65?'good':'weak'}, potential ${c.pot}. ${c.amb}; prefers ${c.pref}.`;request('hire',H,`Hire ${c.name} as ${c.role} (fit ${fit(c)}/100, asks $${fmt(c.sal)}/mo)`,{cid:c.id,sal:c.sal})});rc.status='shortlisted'}
+/* manager shortage detection */
+E.filter(e=>e.lvl===2&&e.dept!=='HR').forEach(m=>{const load=S.tasks.filter(t=>t.status==='In Progress'&&emp(t.who)&&emp(t.who).dept===m.dept).length;if(load>=3&&!S.recruit.some(r=>r.dept===m.dept&&r.status!=='filled')&&Math.random()<.5){addMsg(m.id,'them','Sir, my team is struggling to meet deadlines. I’ve asked HR for another hire.');request('recruit',m,'Staffing shortage in '+m.dept,{dept:m.dept,n:1})}});
+/* initiations */
+let n=0;for(const e of E.sort(()=>Math.random()-.5)){if(n>=2||e.leave)continue;const p=.05*(e.pers.startsWith('shy')?.5:e.pers.startsWith('conf')||e.pers.startsWith('amb')?1.6:1);if(Math.random()>p)continue;n++;await initiate(e)}
+/* evaluations & resignations */
+if(S.day%7===0)E.forEach(e=>{if(e.lvl>=3||e.dept==='Executive'&&e.lvl>=3)return;const s=Math.round((e.prod+e.tech+e.att+e.pun)/4+rnd(-8,8));e.perf.push({d:S.day,s,n:s>80?'Exceptional':s<55?'Poor':'Meets expectations'});const m=mgr(e.dept);if(s<55){e.warn++;note(`${(m||e).name} issued a warning to ${e.name}`);addMsg(e.id,'them','Sir, I received a warning in my evaluation. I think it doesn’t reflect the circumstances — may I explain?')}else if(s>85&&e.lvl<3&&Math.random()<.5&&!S.reqs.some(r=>r.by===e.id&&r.type==='promote'&&r.status==='Pending'))request('promote',m||e,`Recommend promoting ${e.name} (score ${s}).`,{})});
+life();E.filter(e=>e.sat<20).forEach(e=>{S.emps=S.emps.filter(x=>x!==e);note(e.name+' resigned.');hlog(e.name+' resigned (job satisfaction too low)')});
+save();busy=false;render()}
+async function initiate(e){const bad=e.sat<55,topics=[];if(bad||e.pers.startsWith('amb'))topics.push('raise');if(e.tech>65)topics.push('project');topics.push('purchase','leave','idea','complaint','personal','guidance');if(S.day-e.since>10&&e.perf.some(p=>p.s>80)&&e.lvl<3)topics.push('promote');const t=R(topics),o={
+raise:()=>{const a=Math.round(e.salary*rnd(8,15)/100);request('raise',e,`Asks for a raise of $${fmt(a)}/mo (to $${fmt(e.salary+a)}).`,{amt:a});return'Sir, may I discuss something regarding my salary? I’d like to ask for a raise.'},
+project:()=>{const c=rnd(5,40)*1000;request('project',e,'Proposes an internal tooling project, budget $'+fmt(c),{cost:c});return'Sir, I have an idea that could potentially increase our company’s revenue. I’ve filed a proposal.'},
+purchase:()=>{const c=rnd(15,120)*100;request('purchase',e,'New equipment, $'+fmt(c),{cost:c});return'Sir, I need additional equipment to keep up with our workload. Request filed.'},
+leave:()=>{request('leave',e,'Requests 3 days leave',{days:3});return'Sir, may I take a few days of leave? Things have been heavy lately.'},
+promote:()=>{request('promote',e,'Requests promotion',{});return'Sir, I’d like to talk about my career here. I believe I’m ready for more responsibility.'},
+idea:()=>'Good morning, sir. I wanted to suggest improving how we handle handovers; it would save us a few hours each week.',
+complaint:()=>{const o=R(S.emps.filter(x=>x!==e&&x.dept===e.dept&&!(S.wives||[]).includes(x.id)));return o?`Sir, I’m uncomfortable raising this, but I’m having friction with ${o.name}. It’s affecting our work.`:'Sir, the workload feels uneven in our team.'},
+personal:()=>{e.mood-=10;return'Sir, I’m dealing with some personal circumstances that may affect my work for a while. I wanted you to hear it from me.'},
+guidance:()=>'Good morning, sir. I wanted to update you on my work and ask which priority you’d like me to focus on this week.'};
+let m=o[t]();const l=await llm(persona(e)+`\nWrite in your own words a short opening message to the owner about this: "${m}". Keep the meaning, don't add approvals.`);addMsg(e.id,'them',l||m);remember(e.id,'I raised: '+t)}
+/* chat */
+function targets(){return[...S.emps.map(e=>({k:e.id,n:e.name+' · '+e.role})),...DEPTS.map(d=>({k:'D:'+d,n:'📣 '+d+' dept'})),...S.cands.filter(c=>['shortlist','interview'].includes(c.status)).map(c=>({k:c.id,n:'🎤 '+c.name+' (candidate)'}))]}
+async function send(){const i=$('#ci'),t=i.value.trim();if(!t||!chatKey)return;i.value='';addMsg(chatKey,'me',t);render();const k=chatKey;let who,p;
+if(k.startsWith('D:')){who=mgr(k.slice(2));if(!who)return}else if(k[0]==='c'){const c=S.cands.find(x=>x.id===k);c.status='interview';p=`You are ${c.name}, a job candidate for ${c.role}. ${c.edu}, ${c.exp} yrs experience, tech ${c.tech}/100, communication ${c.comm}/100, personality ${c.pers}, ${c.amb}, prefers ${c.pref}, expects $${fmt(c.sal)}/month. You are interviewed by the company owner. Answer in character in 1-3 sentences; negotiate salary realistically; low communication means vague answers. Conversation: ${(S.chats[k]||[]).slice(-8).map(m=>(m.f==='me'?'Owner: ':'You: ')+m.t).join('\n')}`;
+const r=await llm(p)||`Thank you for meeting me, sir. I’m asking around $${fmt(c.sal)} a month.`;addMsg(k,'them',r);save();return render()}else who=emp(k);if(!who)return;
+const h=(S.chats[k]||[]).slice(-8).map(m=>(m.f==='me'?'Owner: ':who.name+': ')+m.t).join('\n');remember(who.id,'Owner told me: '+t.slice(0,80));
+const r=await llm(persona(who)+'\nConversation so far:\n'+h+'\nReply to the owner’s last message.')||(S.mem[who.id].length>2&&Math.random()<.5?'Understood, sir. I’ll keep in mind what we discussed earlier.':R(['Understood, sir. I’ll take that on board.','Thank you, sir. I’ll follow up shortly.','Noted. I’ll see what can be done within my authority.']));addMsg(k,'them',r);who.mood=Math.min(100,who.mood+1);save();render()}
+function offer(){const c=S.cands.find(x=>x.id===chatKey),r=S.reqs.find(x=>x.data.cid===c.id&&x.status==='Pending'),v=prompt('Offer monthly salary ($):',c.sal);if(!v||!r)return;r.data.sal=+v;r.text=`Hire ${c.name} as ${c.role}, owner offer $${fmt(+v)}/mo`;addMsg(c.id,'them',+v>=c.sal*.9?'That works for me, sir. I’m happy to accept.':'That’s lower than I hoped for, sir. Could you consider going higher?');render()}
+function postVac(){const d=$('#vd').value,n=+$('#vn').value||1;S.recruit.push({id:'q'+S.nid++,dept:d,n,by:'owner',status:'open',hired:0,d:S.day});hlog(`Owner opened ${n} vacancy(ies) in ${d}`);render()}
+/* views */
+const bar=v=>`<div class="bar"><i style="width:${Math.max(0,Math.min(100,v))}%"></i></div>`;
+function vInbox(){const P=S.reqs.filter(r=>r.status==='Pending');return`<h3>Pending decisions (${P.length})</h3>`+(P.map(r=>{const e=emp(r.by);return`<div class="c"><span class="tag">${PT[r.type]}</span><span class="m">${esc(e?e.name+' · '+e.role:'HR')} · day ${r.d}</span><p>${esc(r.text)}</p>${r.data.cid?'<span class="m">HR already interviewed this candidate</span>':''}<button class="b g" onclick="decide('${r.id}','ok')">Approve</button><button class="b r" onclick="decide('${r.id}','no')">Reject</button><button class="b" onclick="decide('${r.id}','mod')">Modify</button><button class="b" onclick="decide('${r.id}','ask')">Ask info</button><button class="b" onclick="decide('${r.id}','deleg')">Delegate type</button></div>`}).join('')||'<p class="m">Nothing waiting for you.</p>')+`<h3>Notifications</h3>`+S.notes.slice(0,15).map(n=>`<div class="m">Day ${n.d}: ${esc(n.t)}</div>`).join('')}
+function vStaff(){if(sel){const e=emp(sel);if(e)return`<button class="b" onclick="sel=null;render()">← Directory</button><div class="c"><b>${esc(e.name)}</b><div class="m">${esc(e.role)} · ${e.dept} · $${fmt(e.salary)}/mo · ${e.exp} yrs · ${esc(e.pers)}${e.leave?' · on leave':''}</div>${[['Productivity',e.prod],['Job satisfaction',e.sat],['Motivation',e.mood],['Skills',e.tech],['Communication',e.comm],['Attendance',e.att],['Punctuality',e.pun]].map(x=>`<div class="m">${x[0]} ${Math.round(x[1])}</div>${bar(x[1])}`).join('')}<p class="m">Warnings: ${e.warn} · ${relTxt(e)}</p><button class="b p" onclick="chatKey='${e.id}';tab='chat';render()">Message</button><button class="b" onclick="own('raise','${e.id}')">Raise</button><button class="b" onclick="own('promote','${e.id}')">Promote</button><button class="b r" onclick="own('dismiss','${e.id}')">Dismiss</button></div><h3>Performance history</h3>${e.perf.map(p=>`<div class="m">Day ${p.d}: ${p.s}/100 · ${esc(p.n)}</div>`).join('')||'<p class="m">No evaluations yet.</p>'}<h3>Memory</h3>${(S.mem[e.id]||[]).slice(-6).map(m=>`<div class="m">${esc(m)}</div>`).join('')}`}
+return`<input placeholder="Search employees…" value="${esc(q)}" oninput="q=this.value;render()">`+S.emps.filter(e=>(e.name+e.role+e.dept).toLowerCase().includes(q.toLowerCase())).map(e=>`<div class="c" onclick="sel='${e.id}';render()"><b>${esc(e.name)}</b> <span class="m">${esc(e.role)} · ${e.dept}</span>${bar(e.prod)}</div>`).join('')}
+function own(t,id){const e=emp(id),a=t==='raise'?Math.round(e.salary*.1):0,r={id:'r'+S.nid++,type:t,by:id,text:`Owner action: ${t} ${e.name}`,data:{amt:a},status:'Approved',d:S.day};S.reqs.unshift(r);run(r);hlog(`Owner ${t}: ${e.name}`);sel=t==='dismiss'?null:sel;save();render()}
+function vChat(){const ts=targets();chatKey=chatKey||ts[0].k;const cur=(S.chats[chatKey]||[]);S.unread[chatKey]=0;const c=S.cands.find(x=>x.id===chatKey);return`<div class="m">${aiOk===false?'⚠ AI brain OFF ('+aiErr+') — using local replies':aiOk?'● AI brain ON':'AI brain ready'}</div><div class="chips">${ts.map(t=>`<button class="b ${t.k===chatKey?'p':''}" onclick="chatKey='${t.k}';render()">${esc(t.n)}${S.unread[t.k]?' ●':''}</button>`).join('')}</div><div class="c" style="min-height:200px">${cur.map(m=>`<div class="msg ${m.f==='me'?'me':'th'}">${esc(m.t)}</div>`).join('')||'<p class="m">Say anything. Type your own words.</p>'}</div>${c?`<button class="b" onclick="offer()">Negotiate salary offer</button>`:''}<textarea id="ci" rows="2" placeholder="Type your message…"></textarea><button class="b p" onclick="send()">Send</button>`}
+function vTasks(){const st=['Pending','Awaiting Approval','Approved','In Progress','Under Review','Completed','Rejected','Cancelled'];return`<div class="c"><textarea id="tt" rows="2" placeholder="e.g. John, investigate why sales decreased and prepare a report"></textarea><select id="ta">${DEPTS.map(d=>`<option value="D:${d}">${d} dept</option>`).join('')}${S.emps.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('')}</select><button class="b p" onclick="assign()">Assign task</button></div>`+S.tasks.map(t=>{const w=emp(t.who);return`<div class="c"><span class="tag">${t.status}</span><span class="m">${w?esc(w.name):''} · due day ${t.due}</span><p>${esc(t.text)}</p>${bar(t.prog)}${t.report?`<pre>${esc(t.report)}</pre>`:''}${t.log.slice(-2).map(l=>`<div class="m">${esc(l)}</div>`).join('')}${t.status==='Under Review'?`<button class="b g" onclick="review('${t.id}','ok')">Accept</button><button class="b" onclick="review('${t.id}','back')">Send back</button><button class="b r" onclick="review('${t.id}','rej')">Reject</button>`:''}${['In Progress','Pending'].includes(t.status)?`<button class="b" onclick="review('${t.id}','can')">Cancel</button>`:''}</div>`}).join('')||'<p class="m">No tasks yet.</p>'}
+function vHR(){const cs=S.cands.filter(c=>c.status!=='hired'&&c.status!=='rejected').sort((a,b)=>(b.status==='shortlist')-(a.status==='shortlist')||fit(b)-fit(a));return`<div class="c"><b>Post vacancy</b><select id="vd">${DEPTS.slice(1).map(d=>`<option>${d}</option>`).join('')}</select><input id="vn" type="number" value="1" min="1"><button class="b p" onclick="postVac()">Open recruitment</button></div><h3>Recruitment (${S.recruit.length})</h3>${S.recruit.map(r=>`<div class="m">${r.dept} ×${r.n} · ${r.status} · hired ${r.hired}</div>`).join('')}<h3>Applicants</h3>${cs.slice(0,25).map(c=>`<div class="c"><b>${esc(c.name)}</b> <span class="tag">${c.status}</span><div class="m">${c.role} · ${c.edu} · ${c.exp}y · tech ${c.tech} · comm ${c.comm} · potential ${c.pot} · fit ${fit(c)} · asks $${fmt(c.sal)} · ${esc(c.pers)}</div>${c.note?`<div class="m">${esc(c.note)}</div>`:''}</div>`).join('')}`}
+function vMore(){return`<h3>AI brain (free key)</h3><div class='c'><select id='aip'><option value='none'>Off (local replies)</option><option value='gemini' ${aiGet('prov')==='gemini'?'selected':''}>Google Gemini (free)</option><option value='groq' ${aiGet('prov')==='groq'?'selected':''}>Groq (free)</option></select><input id='aik' type='password' placeholder='Paste API key' value='${esc(aiGet('key'))}'><input id='aim' placeholder='Model (optional)' value='${esc(aiGet('model'))}'><button class='b p' onclick='saveAI()'>Save</button><div class='m'>Key stays in this browser only.</div></div><h3>Authority levels</h3>${Object.keys(PT).map(k=>`<div class="m">${PT[k]}</div><select onchange="S.perm['${k}']=this.value;hlog('Owner set ${PT[k]} to '+LV[this.value]);save()">${Object.keys(LV).map(l=>`<option value="${l}" ${S.perm[k]===l?'selected':''}>${LV[l]}</option>`).join('')}</select>`).join('')}<h3>Decision history</h3>${S.hist.slice(0,40).map(h=>`<div class="m">Day ${h.d}: ${esc(h.t)}</div>`).join('')||'<p class="m">Empty.</p>'}<p><button class="b r" onclick="if(confirm('Reset the company?')){init();save();render()}">New company</button></p>`}
+function render(pre){const pend=S.reqs.filter(r=>r.status==='Pending').length,un=Object.values(S.unread).reduce((a,b)=>a+b,0);
+$('#st').textContent=`Day ${S.day} · $${fmt(S.cash)} · ${S.emps.length} staff`;
+$('#nav').innerHTML=[['office','Office'],['inbox','Inbox'+(pend?' ('+pend+')':'')],['staff','Staff'],['chat','Chat'+(un?' ●':'')],['tasks','Tasks'],['hr','HR'],['more','More']].map(t=>`<button class="${tab===t[0]?'on':''}" onclick="tab='${t[0]}';render()">${t[1]}</button>`).join('');
+const keep=tab==='chat'&&$('#ci')?$('#ci').value:'';$('#main').innerHTML={office:vOffice,inbox:vInbox,staff:vStaff,chat:vChat,tasks:vTasks,hr:vHR,more:vMore}[tab]();
+if(tab==='chat'&&$('#ci')){$('#ci').value=pre||keep}if(tab==='office')bindCv();save()}
+/* 2D office */
+const AG={},G=[135,202,267,332,397,462,527],SP={eat:[[216,384],[296,384],[376,384],[456,384],[526,384]],rest:[[40,126],[70,126],[40,170],[70,170]],coffee:[[612,226],[600,226]],meet:[[575,160],[605,160]],wc:[[612,296]],chat:[[100,306],[110,240]]},HC=['#3b2a20','#8a8a8a','#c9a227','#222','#7a3b1d','#b5651d'],SK=['#f2c9a0','#e0ac80','#c68b5e','#8d5a3b'],DC={Executive:'#6a3fa0',HR:'#d0568a',Engineering:'#2e6fd0',Marketing:'#e08a1e',Finance:'#2e9a5a','R&D':'#17a2a2'};let auto=0,fr=0;
+const hsh=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h},dk=i=>({x:150+(i%6)*65,y:90+Math.floor(i/6)*50}),ng=x=>G.reduce((b,g)=>Math.abs(g-x)<Math.abs(b-x)?g:b),working=e=>S.tasks.some(t=>t.who===e.id&&t.status==='In Progress');
+function go(a,tx,ty){const g1=ng(a.x),g2=ng(tx);a.path=g1===g2?[[g1,a.y],[g2,ty],[tx,ty]]:[[g1,a.y],[g1,80],[g2,80],[g2,ty],[tx,ty]]}
+function upd(e,i){if(e.leave)return;const d=dk(i%20),ch=[d.x+20,d.y+30];let a=AG[e.id];if(!a){a=AG[e.id]={x:452,y:76,path:[],stay:0,away:0};go(a,ch[0],ch[1])}
+if(a.path.length){const p=a.path[0],dx=p[0]-a.x,dy=p[1]-a.y,l=Math.hypot(dx,dy);if(l<1)a.path.shift();else{a.x+=dx/l*.7;a.y+=dy/l*.7}}
+else if(a.away){if(--a.stay<=0){a.away=0;go(a,ch[0],ch[1])}}
+else if(Math.hypot(a.x-ch[0],a.y-ch[1])>2)go(a,ch[0],ch[1]);
+else if(Math.random()<(working(e)?.0004:.003)){a.away=1;a.stay=rnd(150,400);const s=R(SP);go(a,s[0]+rnd(-6,6),s[1])}
+a.sit=!a.path.length&&!a.away}
+function plant(c,x,y){c.fillStyle='#8a4b22';c.fillRect(x+2,y+8,8,6);c.fillStyle='#2f8a3c';c.fillRect(x,y,12,9);c.fillStyle='#e0572a';c.fillRect(x+4,y-2,3,3)}
+function draw(){const cv=$('#cv');if(!cv||!S)return;const c=cv.getContext('2d');fr++;
+for(let y=70;y<320;y+=16)for(let x=0;x<480;x+=16){c.fillStyle=((x+y)/16)%2?'#d9a66b':'#d2a064';c.fillRect(x,y,16,16)}
+c.fillStyle='#2b2d3a';c.fillRect(0,0,480,72);
+for(let k=0;k<5;k++){const x=20+k*88;c.fillStyle='#8fc4ee';c.fillRect(x,6,78,56);c.fillStyle='#5f8fbd';for(let j=0;j<6;j++){const h=14+(j*37+k*11)%34;c.fillRect(x+3+j*12,62-h,9,h)}c.fillStyle='#2b2d3a';c.fillRect(x+38,6,2,56)}
+c.fillStyle='#fff';c.fillRect(232,4,16,16);c.fillStyle='#222';c.fillRect(239,7,2,7);c.fillRect(240,12,5,2);
+c.fillStyle='#9aa4ad';c.fillRect(432,34,40,38);c.fillStyle='#c33';c.fillRect(438,22,26,8);c.fillStyle='#fff';c.font='bold 7px monospace';c.fillText('EXIT',442,29);
+c.fillStyle='#111';c.fillRect(4,36,28,18);c.fillStyle='#3c9';c.fillRect(8,46,3,6);c.fillRect(13,42,3,10);c.fillRect(18,38,3,14);
+c.fillStyle='#8a2f2f';c.fillRect(12,104,76,84);c.fillStyle='#2e3f6e';c.fillRect(16,108,68,14);c.fillRect(16,170,68,14);c.fillStyle='#8a5a2b';c.fillRect(34,136,30,14);
+plant(c,6,84);plant(c,98,84);plant(c,462,100);plant(c,10,230);
+c.fillStyle='#6ab';c.fillRect(96,254,10,18);c.fillStyle='#fff';c.fillRect(8,276,18,28);c.fillStyle='#b98550';c.fillRect(30,288,56,16);c.fillStyle='#333';c.fillRect(100,296,10,10);
+for(let i=0;i<20;i++){const d=dk(i),e=S.emps[i],w=e&&working(e);c.fillStyle='#8a5320';c.fillRect(d.x,d.y+8,40,14);c.fillStyle='#c07a3a';c.fillRect(d.x,d.y+8,40,4);c.fillStyle='#222';c.fillRect(d.x+14,d.y,12,9);c.fillStyle=w?(fr%40<20?'#4d6':'#3b5'):'#35a';c.fillRect(d.x+15,d.y+1,10,6);c.fillStyle='#223';c.fillRect(d.x+15,d.y+26,10,7)}
+const L=S.emps.filter(e=>AG[e.id]&&!e.leave).sort((p,q)=>AG[p.id].y-AG[q.id].y);
+for(const e of L){const a=AG[e.id],h=hsh(e.id),x=Math.round(a.x),y=Math.round(a.y),mv=!a.sit&&a.path.length;c.fillStyle='#0003';c.fillRect(x-4,y,8,2);c.fillStyle='#334';if(mv&&fr%20<10)c.fillRect(x-3,y-3,3,4),c.fillRect(x,y-1,3,2);else if(mv)c.fillRect(x-3,y-1,3,2),c.fillRect(x,y-3,3,4);else c.fillRect(x-3,y-2,6,2);
+c.fillStyle=DC[e.dept];c.fillRect(x-4,y-10,8,8);if(e.lvl>=2){c.fillStyle='#fff';c.fillRect(x,y-9,1,5)}c.fillStyle=SK[h%4];c.fillRect(x-3,y-16,6,6);c.fillStyle=HC[h%6];c.fillRect(x-3,y-17,6,3);
+c.font='bold 6px monospace';const nm=e.name.split(' ')[0],tw=c.measureText(nm).width;c.fillStyle='#0a3';c.fillRect(x-tw/2-1,y-25,tw+2,7);c.fillStyle='#bfffc8';c.fillText(nm,x-tw/2,y-19);
+const pr=S.reqs.some(r=>r.by===e.id&&r.status==='Pending'),un=S.unread[e.id];if(pr||un){c.fillStyle='#fff';c.fillRect(x-4,y-36,9,9);c.fillStyle=pr?'#d22':'#36c';c.font='bold 8px monospace';c.fillText(pr?'!':'…',x-2,y-28)}
+if(e.id===sel){c.fillStyle='#ff0';c.fillRect(x-2,y+3,5,2)}}
+const P=S.reqs.filter(r=>r.status==='Pending').length,N=S.tasks.filter(t=>t.status==='In Progress').length;c.fillStyle='#111c';c.fillRect(4,4,112,26);c.strokeStyle='#e8c630';c.lineWidth=1;c.strokeRect(4.5,4.5,111,25);c.fillStyle='#e8c630';c.font='bold 7px monospace';c.fillText('Day '+S.day+'  $'+fmt(S.cash),9,15);c.fillStyle='#bfffc8';c.fillText(P+' req · '+N+' run · '+(S.emps.length-N)+' idle',9,25);
+c.fillStyle='#111';c.fillRect(0,309,480,11);c.fillStyle='#8f8';c.font='7px monospace';c.fillText(S.emps.length+' staff · click a worker · Next day ▶ to advance',6,317)}
+function loop(){if(S)S.emps.forEach(upd);draw();requestAnimationFrame(loop)}
+function bindCv(){const cv=$('#cv');cv.onclick=ev=>{const r=cv.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width*480,y=(ev.clientY-r.top)/r.height*320;let b=null,bd=14;S.emps.forEach(e=>{const a=AG[e.id];if(!a||e.leave)return;const d=Math.hypot(a.x-x,a.y-8-y);if(d<bd){bd=d;b=e}});if(b){sel=b.id;chatKey=b.id;render()}}}
+function toggleAuto(){auto=auto?(clearInterval(auto),0):setInterval(nextDay,7000);render()}
+function vOffice(){const e=sel&&emp(sel);return`<canvas id="cv" width="480" height="320"></canvas><div class="c" style="margin-top:8px">${e?`<b>${esc(e.name)}</b> <span class="m">${esc(e.role)} · mood ${Math.round(e.mood)} · ${esc(e.pers)}</span><div><button class="b p" onclick="tab='chat';render()">Message</button><button class="b" onclick="tab='staff';render()">Profile</button></div>`:'<span class="m">Click a worker to talk to them. A red ! means they need your decision; … means a new message.</span>'}</div><button class="b" onclick="toggleAuto()">${auto?'⏸ Pause':'▶ Auto-play days'}</button>`}
+/* v2: bigger office, needs, love, free will */
+function delegDecide(r,dm,e){const d=r.data,k=r.type==='hire'&&S.cands.find(x=>x.id===d.cid),c=d.cost||(d.sal?d.sal*3:0)||(d.amt?d.amt*12:0);if(c>=50000||(r.type==='hire'&&!k))return false;let ok;
+if(r.type==='resign')ok=Math.random()<.35;else if(S.cash-c<100000)ok=false;else if(r.type==='raise')ok=e.prod>55&&Math.random()<.7;else if(r.type==='promote')ok=e.prod>70;else if(r.type==='hire')ok=fit(k)>=60;else ok=Math.random()<.8;
+r.status=ok?'Approved':'Rejected';r.auto=true;hlog(`${dm.role} ${dm.name} ${ok?'APPROVED':'REJECTED'} ${PT[r.type]} (${e.name}) — delegated authority`);note(`${dm.name} ${ok?'approved':'rejected'} ${PT[r.type]} for ${e.name}.`);
+if(ok)run(r);else if(r.type==='resign'){e.sat=Math.min(100,e.sat+12);e.mood=Math.min(100,e.mood+10)}else{e.sat=Math.max(0,e.sat-5);if(k)k.status='rejected'}return true}
+const relTxt=e=>{const r=(S.rel||[]).find(x=>x.st!=='ended'&&(x.a===e.id||x.b===e.id));if(!r)return'Single';const o=r.out||(emp(r.a===e.id?r.b:r.a)||{}).name;return({crush:'Crush on ',dating:'Dating ',couple:'Couple with '}[r.st])+o+(r.out?' (outside work)':'')};
+function life(){S.rel=S.rel||[];S.wives=S.wives||[];S.emps.forEach(e=>{if(e.hp==null)return;e.wealth+=e.salary/30*.4-rnd(0,20);e.hp=Math.max(5,Math.min(100,e.hp+(e.sat>40?.5:-1)));if(e.hp<25&&Math.random()<.2){e.leave=3;e.hp+=20;note(e.name+' is on sick leave.')}if(S.wives.includes(e.id)){e.sat=Math.min(100,e.sat+2);e.aff=Math.min(100,e.aff+1)}});const E=S.emps,busy=y=>(S.wives||[]).includes(y.id)||S.rel.some(z=>z.st!=='ended'&&(z.a===y.id||z.b===y.id));
+E.forEach(e=>{if(e.leave)return;const r=S.rel.find(x=>x.st!=='ended'&&(x.a===e.id||x.b===e.id));
+if(r){const o=emp(r.a===e.id?r.b:r.a);if(r.out){if(Math.random()<.03){r.st='ended';e.mood-=25;e.sat-=10;note(e.name+' broke up with '+r.out+'.');say(e,'Your partner outside work just ended things; you feel low. Tell the owner briefly.')}}
+else if(!o)r.st='ended';else if(r.a===e.id){if(r.st==='crush'&&Math.random()<.3){r.st='dating';note(e.name+' and '+o.name+' are dating.')}else if(r.st==='dating'&&Math.random()<.1){r.st='couple';note(e.name+' and '+o.name+' are now a couple ♥')}else if(r.st!=='crush'&&Math.random()<.015){r.st='ended';e.mood-=20;o.mood-=20;e.sat-=8;o.sat-=8;note(e.name+' and '+o.name+' broke up. The office is awkward.')}}}
+else{const x=Math.random();if(x<.02){const n=R(FN)+' '+R(LN);S.rel.push({a:e.id,b:null,out:n,st:'dating'});note(e.name+' started dating '+n+' outside work.')}else if(x<.05){const o=R(E.filter(y=>y!==e&&!y.leave&&!busy(y)));if(o){S.rel.push({a:e.id,b:o.id,st:'crush'});note(e.name+' has a crush on '+o.name+'.')}}}
+if(!(S.wives||[]).includes(e.id)&&(100-e.sat)*.5+(100-e.mood)*.3>58&&Math.random()<.04&&!S.reqs.some(q=>q.by===e.id&&q.type==='resign'&&q.status==='Pending')){request('resign',e,'Hands in resignation: '+(e.sat<45?'unhappy at work':'burnout')+(e.mood<40?' and a rough personal time.':'.'),{});addMsg(e.id,'them','Sir, I’ve thought about it for a while. I’d like to resign. I’m sorry.')}})}
+function go2(e,a,act){a.away=1;a.act=act;a.stay=act==='eat'?260:rnd(120,300);const s=R(SP[act]);go(a,s[0]+rnd(-5,5),s[1]);const p=(S.rel||[]).find(r=>r.st==='couple'&&(r.a===e.id||r.b===e.id)),o=p&&AG[p.a===e.id?p.b:p.a];if(o&&act==='eat'&&!o.away&&!o.path.length){o.away=1;o.act='eat';o.stay=260;go(o,s[0]+14,s[1])}}
+function upd(e,i){if(e.leave)return;const d=dk(i%30),ch=[d.x+20,d.y+30];let a=AG[e.id];if(!a){a=AG[e.id]={x:606,y:76,path:[],stay:0,away:0,act:'',food:rnd(60,100),en:rnd(60,100)};go(a,ch[0],ch[1])}
+a.food-=.012;a.en-=.007;if(a.food<5)e.mood=Math.max(5,e.mood-.01);
+if(a.path.length){const p=a.path[0],dx=p[0]-a.x,dy=p[1]-a.y,l=Math.hypot(dx,dy);if(l<1)a.path.shift();else{a.x+=dx/l*.8;a.y+=dy/l*.8}}
+else if(a.away){if(--a.stay<=0){if(a.act==='eat'){a.food=100;e.mood=Math.min(100,e.mood+4)}else if(a.act!=='chat')a.en=Math.min(100,a.en+(a.act==='coffee'?60:45));a.away=0;a.act='';go(a,ch[0],ch[1])}}
+else if(Math.hypot(a.x-ch[0],a.y-ch[1])>2)go(a,ch[0],ch[1]);
+else{const act=a.food<35?'eat':a.en<30?R(['rest','coffee']):Math.random()<(working(e)?.0003:.002)?R(['chat','meet','wc','coffee','rest']):null;if(act)go2(e,a,act)}
+a.sit=!a.path.length&&!a.away}
+function draw(){const cv=$('#cv');if(!cv||!S)return;const c=cv.getContext('2d'),f=(o,x,y,w,h)=>{c.fillStyle=o;c.fillRect(x,y,w,h)},T=(s,x,y,o)=>{c.fillStyle=o||'#fff';c.font='bold 6px monospace';c.fillText(s,x,y)};fr++;
+for(let y=72;y<400;y+=16)for(let x=0;x<640;x+=16)f(((x+y)/16)%2?'#d9a66b':'#d2a064',x,y,16,16);
+f('#2b2d3a',0,0,640,72);for(let k=0;k<6;k++){const x=14+k*88;f('#8fc4ee',x,6,78,56);for(let j=0;j<6;j++){const h=14+(j*37+k*11)%34;f('#5f8fbd',x+3+j*12,62-h,9,h)}f('#2b2d3a',x+38,6,2,56)}
+f('#fff',552,6,0,0);f('#fff',311,4,16,16);f('#222',318,7,2,7);f('#222',319,12,5,2);f('#9aa4ad',584,34,44,38);f('#c33',590,20,32,9);T('EXIT',597,27);
+f('#111',20,40,40,22);f('#3c9',26,54,4,6);f('#3c9',33,49,4,11);f('#3c9',40,44,4,16);
+f('#8a2f2f',10,100,112,106);f('#2e3f6e',16,104,100,14);f('#2e3f6e',16,184,100,14);f('#8a5a2b',44,140,44,16);T('LOUNGE',14,216,'#4a2a10');
+f('#fff',10,296,18,32);f('#b98550',32,306,70,22);f('#222',40,298,14,8);T('PANTRY',10,340,'#4a2a10');
+f('#b98550',150,338,60,10);T('CAFETERIA',215,346,'#4a2a10');for(let k=0;k<5;k++){f('#e8d9b0',190+k*80,358,52,14);f('#c9b98a',190+k*80,372,52,2)}
+f('#a9d3ea',552,100,84,92);f('#8a5a2b',566,128,56,26);T('MEETING',556,110,'#123');f('#c33',566,200,16,26);f('#36c',586,200,16,26);f('#444',606,204,14,16);f('#5a6',596,260,36,32);T('WC',606,280);
+[[6,84],[126,84],[540,84],[6,236],[140,300],[560,320],[620,340],[130,380]].forEach(p=>plant(c,p[0],p[1]));
+for(let i=0;i<30;i++){const d=dk(i),e=S.emps[i],w=e&&working(e);f('#8a5320',d.x,d.y+8,40,14);f('#c07a3a',d.x,d.y+8,40,4);f('#222',d.x+14,d.y,12,9);f(w?(fr%40<20?'#4d6':'#3b5'):'#35a',d.x+15,d.y+1,10,6);f('#223',d.x+15,d.y+26,10,7)}
+const L=S.emps.filter(e=>AG[e.id]&&!e.leave).sort((p,q)=>AG[p.id].y-AG[q.id].y);
+for(const e of L){const a=AG[e.id],h=hsh(e.id),x=Math.round(a.x),y=Math.round(a.y),mv=!a.sit&&a.path.length;f('#0003',x-4,y,8,2);c.fillStyle='#334';if(mv&&fr%20<10){c.fillRect(x-3,y-3,3,4);c.fillRect(x,y-1,3,2)}else if(mv){c.fillRect(x-3,y-1,3,2);c.fillRect(x,y-3,3,4)}else c.fillRect(x-3,y-2,6,2);
+f(DC[e.dept],x-4,y-10,8,8);if(e.lvl>=2)f('#fff',x,y-9,1,5);f(SK[h%4],x-3,y-16,6,6);f(HC[h%6],x-3,y-17,6,3);
+const nm=e.name.split(' ')[0],tw=nm.length*3.6+2;f('#0a3',x-tw/2,y-25,tw,7);T(nm,x-tw/2+1,y-19,'#bfffc8');
+const pr=S.reqs.some(r=>r.by===e.id&&r.status==='Pending'),un=S.unread[e.id];if(pr||un){f('#fff',x-4,y-36,9,9);c.fillStyle=pr?'#d22':'#36c';c.font='bold 8px monospace';c.fillText(pr?'!':'…',x-2,y-28)}
+if(a.food<35)f('#f80',x+5,y-24,3,3);if(a.en<30)f('#39f',x+5,y-20,3,3);if(e.id===sel)f('#ff0',x-2,y+3,5,2)}
+(S.rel||[]).forEach(r=>{const p=AG[r.a],q=AG[r.b];if(r.st==='couple'&&p&&q&&Math.hypot(p.x-q.x,p.y-q.y)<30)T('♥',(p.x+q.x)/2-2,Math.min(p.y,q.y)-30,'#f55')});
+const P=S.reqs.filter(r=>r.status==='Pending').length,N=S.tasks.filter(t=>t.status==='In Progress').length;f('#111c',4,4,118,26);c.strokeStyle='#e8c630';c.strokeRect(4.5,4.5,117,25);T('Day '+S.day+'  $'+fmt(S.cash),9,15,'#e8c630');T(P+' req · '+N+' run · '+(S.emps.length-N)+' idle',9,25,'#bfffc8');
+f('#111',0,389,640,11);T(S.emps.length+' staff · tap a worker · orange dot = hungry, blue = tired',6,397,'#8f8')}
+function bindCv(){const cv=$('#cv');cv.onclick=ev=>{const r=cv.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width*640,y=(ev.clientY-r.top)/r.height*400;let b=null,bd=14;S.emps.forEach(e=>{const a=AG[e.id];if(!a||e.leave)return;const d=Math.hypot(a.x-x,a.y-8-y);if(d<bd){bd=d;b=e}});if(b){sel=b.id;chatKey=b.id;render()}}}
+function vOffice(){const e=sel&&emp(sel),a=e&&AG[e.id];return`<h3>Pixelworks HQ · <span style="color:var(--ok)">● Live</span></h3><canvas id="cv" width="640" height="400"></canvas><div class="c" style="margin-top:10px">${e?`<b>${esc(e.name)}</b> <span class="m">${esc(e.role)} · ${esc(e.pers)}</span><div class="m">${relTxt(e)}${a?' · '+(a.away?'now: '+a.act:'at desk'):''}</div>${a?`<div class="m">Food</div>${bar(a.food)}<div class="m">Energy</div>${bar(a.en)}`:''}<div class="m">Mood</div>${bar(e.mood)}<p><button class="b p" onclick="tab='chat';render()">Message</button><button class="b" onclick="tab='staff';render()">Profile</button></p>`:'<span class="m">Tap a worker to talk to them. ! = needs your decision, … = new message.</span>'}</div><button class="b" onclick="toggleAuto()">${auto?'⏸ Pause':'▶ Auto-play days'}</button>`}
+/* v3: rooms, camera, bubbles, stats, wives */
+const FEM=/^(Amelia|Chloe|Elena|Grace|Isla|Lena|Nadia|Priya|Rosa|Tara|Vera|Zoe)$/;let WL=null,cam=1;
+const Wd='#8a5a2b',Dk='#5b3a1a',Kb='#222',Mt='#8a929c',Bu='#2e3f6e',Gr='#2f8a3c',Gl='#a9d3ea',Fw='#eee',Rd='#c33',Bl='#36c';
+const ROOMS=[
+{n:'Owner Office',x:0,y:0,w:320,h:200,f:['#7b5b3b','#735336'],it:[[100,100,120,70,'#8a2f2f'],[110,50,100,26,Dk],[145,44,30,8,Kb],[150,86,20,12,'#6b2a1f'],[20,40,60,22,Bu],[30,70,40,14,Wd],[250,28,50,28,Dk],[262,70,26,26,'#666'],[230,130,70,22,'#b98550'],[20,120,22,40,Gr]]},
+{n:'CEO Office',x:320,y:0,w:320,h:200,f:['#6e5a45','#675340'],it:[[100,100,120,70,'#2f4a6e'],[110,50,100,26,Dk],[145,44,30,8,Kb],[150,86,20,12,'#6b2a1f'],[24,110,50,40,Wd],[250,28,50,28,Dk],[240,155,60,22,Bu],[290,70,14,24,Gr]]},
+{n:'Meeting Room',x:640,y:0,w:320,h:200,f:['#8e8e96','#868690'],it:[[60,70,200,40,'#6b4a2a'],[110,28,100,6,Kb],[20,28,60,6,Fw]],ch:1},
+{n:'Lobby',x:960,y:0,w:320,h:200,f:['#c9c0ae','#c2b9a6'],it:[[40,50,120,24,Wd],[190,110,90,22,Bu],[60,130,50,40,'#c9b98a'],[280,40,24,34,'#9aa4ad'],[284,28,16,7,Rd],[20,130,14,24,Gr]]},
+{n:'HR',x:0,y:200,w:320,h:200,f:['#e3c3cd','#dcbac5'],it:[[20,32,16,24,Mt],[40,32,16,24,Mt],[250,30,50,24,Fw],[240,150,60,30,Wd],[290,96,12,16,Gr],[20,150,30,20,Kb]]},
+{n:'Finance',x:320,y:200,w:320,h:200,f:['#bfd8c4','#b7d1bd'],it:[[270,30,36,36,'#555'],[20,32,16,24,Mt],[40,32,16,24,Mt],[200,32,50,24,Fw],[250,150,40,24,Kb],[20,150,30,20,'#2f6a4a']]},
+{n:'Marketing',x:640,y:200,w:320,h:200,f:['#f0cf9c','#e8c692'],it:[[250,130,50,40,'#555'],[260,140,30,10,Fw],[20,32,80,24,'#c9a227'],[200,32,60,24,Fw],[20,150,40,20,Wd]]},
+{n:'R&D Lab',x:960,y:200,w:320,h:200,f:['#bfe0e6','#b6d8df'],it:[[20,150,140,22,'#d8e8f0'],[270,30,16,40,Kb],[290,30,16,40,Kb],[200,150,40,28,'#666'],[20,32,60,24,Fw]]},
+{n:'Engineering',x:0,y:400,w:640,h:400,f:['#b9c6e6','#b1bfdf'],it:[[20,230,16,60,Kb],[40,230,16,60,Kb],[60,230,16,60,Kb],[80,230,16,60,Kb],[20,30,100,10,Fw],[400,30,100,10,Fw],[400,240,130,30,Bu],[420,290,60,40,Wd],[560,230,50,22,'#444'],[560,300,50,40,Fw]]},
+{n:'Pantry',x:640,y:400,w:320,h:200,f:['#e6d6b0','#dfcea8'],it:[[20,30,150,18,'#b98550'],[180,26,20,34,Fw],[30,22,16,8,Kb],[230,26,22,34,Rd],[256,26,22,34,Bl],[284,30,20,18,'#444']],tb:[[40,100],[120,100],[200,100],[260,150]]},
+{n:'Gym',x:960,y:400,w:320,h:200,f:['#c9d0d6','#c1c9cf'],it:[[20,28,280,6,Gl],[30,40,30,50,'#444'],[70,40,30,50,'#444'],[110,40,30,50,'#444'],[200,110,50,16,Kb],[200,100,50,5,Mt],[250,40,50,20,Mt],[30,130,100,40,'#3a7a5a'],[290,150,14,26,Bl],[160,60,12,40,Rd]]},
+{n:'Lounge',x:640,y:600,w:320,h:200,f:['#d3b8d8','#cbaed0'],it:[[20,70,100,60,'#6a3a8a'],[30,50,80,24,Bu],[30,120,80,24,Bu],[40,32,60,8,Kb],[160,90,100,50,'#2e7d5a'],[208,90,4,50,Fw],[270,40,24,24,Rd],[270,70,24,24,Bl],[200,28,60,24,Dk]]},
+{n:'Restrooms',x:960,y:600,w:320,h:200,f:['#d8e4ea','#d0dde4'],it:[[20,40,30,50,'#9aa4ad'],[60,40,30,50,'#9aa4ad'],[100,40,30,50,'#9aa4ad'],[140,40,30,50,'#9aa4ad'],[20,128,200,6,Gl],[20,140,200,16,Fw]]}];
+const VIEWS=[{n:'All',x:0,y:0,w:1280,h:800},...ROOMS.map(r=>({n:r.n,x:r.x,y:r.y,w:r.w,h:r.h}))];
+const SPT={eat:[[702,536],[782,536],[862,536],[922,586]],rest:[[710,686],[700,756],[880,745]],coffee:[[930,472]],meet:[[730,130],[790,130],[850,130]],wc:[[995,708],[1075,708]],gym:[[1005,505],[1045,505],[1085,505],[1190,552]],chat:[[1100,150],[1190,150]],visit:[[50,135],[90,135]]};
+const PH={eat:['Lunch time!','So hungry...','Yum.'],coffee:['Need coffee ☕'],rest:['Quick break','Ahh, sofa time'],gym:['Time to work out!','Leg day...'],wc:['Back in a sec'],meet:['Meeting time'],visit:['♥ Visiting hubby'],chat:['Heard the news?','Nice weather today','Any weekend plans?','Did you see the game?','Haha, no way!'],work:['Almost done...','Great idea!','Deadline is tight','Need more data']};
+const DK={Executive:[{x:460,y:60,ax:420,s:1},{x:556,y:112,ax:540}],HR:[],Finance:[],Marketing:[],'R&D':[],Engineering:[]};
+[['HR',0,200],['Finance',320,200],['Marketing',640,200],['R&D',960,200]].forEach(([d,ox,oy])=>{for(let r=0;r<2;r++)for(let k=0;k<3;k++)DK[d].push({x:ox+40+k*90,y:oy+60+r*60,ax:ox+105+k*90})});
+for(let r=0;r<3;r++)for(let s=0;s<2;s++)for(let k=0;k<4;k++){const x=(s?350:30)+k*70;DK.Engineering.push({x,y:440+r*50,ax:x+55})}
+function buildWorld(){WL=document.createElement('canvas');WL.width=1280;WL.height=800;const c=WL.getContext('2d'),f=(o,x,y,w,h)=>{c.fillStyle=o;c.fillRect(x,y,w,h)};
+ROOMS.forEach(r=>{for(let y=0;y<r.h;y+=16)for(let x=0;x<r.w;x+=16)f(((x+y)/16)%2?r.f[0]:r.f[1],r.x+x,r.y+y,16,16);f('#2b2d3a',r.x,r.y,r.w,24);for(let x=10;x<r.w-20;x+=50)f('#8fc4ee',r.x+x,r.y+4,36,16);
+r.it.forEach(i=>f(i[4],r.x+i[0],r.y+i[1],i[2],i[3]));(r.tb||[]).forEach(t=>{f('#e8d9b0',r.x+t[0],r.y+t[1],44,24);f('#444',r.x+t[0]-8,r.y+t[1]+6,6,12);f('#444',r.x+t[0]+46,r.y+t[1]+6,6,12)});
+if(r.ch)for(let k=0;k<6;k++){f(Kb,r.x+70+k*32,r.y+60,16,8);f(Kb,r.x+70+k*32,r.y+112,16,8)}
+c.fillStyle='#fff';c.font='bold 9px monospace';c.fillText(r.n.toUpperCase(),r.x+6,r.y+17);c.strokeStyle='#1b2233';c.lineWidth=2;c.strokeRect(r.x+1,r.y+1,r.w-2,r.h-2)});
+Object.values(DK).flat().forEach(d=>{if(d.s)return;f('#8a5320',d.x,d.y+8,40,14);f('#c07a3a',d.x,d.y+8,40,4);f(Kb,d.x+14,d.y,12,9);f('#35a',d.x+15,d.y+1,10,6);f('#223',d.x+15,d.y+26,10,7)})}
+function go(a,tx,ty,tax){const by=Math.floor(a.y/200)*200+192,cb=Math.floor(tx/320),t2=Math.floor(ty/200)*200+192,p=[];if(a.ax!=null){p.push([a.ax,a.y],[a.ax,by])}else p.push([a.x,by]);p.push([cb*320+8,by],[cb*320+8,t2]);if(tax!=null)p.push([tax,t2],[tax,ty]);else p.push([tx,t2]);p.push([tx,ty]);a.path=p;a.ax=null;a.tax=tax}
+function go2(e,a,act){a.away=1;a.act=act;a.stay=act==='eat'?260:rnd(150,320);const s=R(SPT[act]);go(a,s[0]+rnd(-6,6),s[1]);a.say=R(PH[act]||PH.chat);a.sayT=200}
+function upd(e,i){if(e.leave)return;if(e.hp==null)Object.assign(e,{hp:rnd(60,100),iq:rnd(45,95),looks:rnd(30,100),wealth:rnd(500,8000),aff:rnd(35,60),age:rnd(22,52),g:FEM.test(e.name.split(' ')[0])?'f':'m'});
+const sec=e.role==='Executive Secretary',A=sec?DK.Secretary:(DK[e.dept]||DK.Engineering),d=A[S.emps.filter(x=>sec?x.role==='Executive Secretary':(x.dept===e.dept&&x.role!=='Executive Secretary')).indexOf(e)%A.length],ch=[d.x+20,d.y+30];let a=AG[e.id];
+if(!a){a=AG[e.id]={x:1230,y:150,path:[],stay:0,away:0,act:'',food:rnd(60,100),en:rnd(60,100),ax:null};go(a,ch[0],ch[1],d.ax)}
+a.d=d;a.food-=.012;a.en-=.007;if(a.food<5)e.mood=Math.max(5,e.mood-.01);if(a.sayT>0)a.sayT--;
+if(a.path.length){const p=a.path[0],dx=p[0]-a.x,dy=p[1]-a.y,l=Math.hypot(dx,dy);if(l<1)a.path.shift();else{a.x+=dx/l*1.1;a.y+=dy/l*1.1}}
+else if(a.away){if(a.stay%90===0&&a.stay>0){a.say=R(PH.chat);a.sayT=150}if(--a.stay<=0){if(a.act==='eat'){a.food=100;e.mood=Math.min(100,e.mood+4)}else if(a.act==='gym'){e.hp=Math.min(100,e.hp+4);e.looks=Math.min(100,e.looks+.3);a.en-=12}else if(a.act!=='chat'&&a.act!=='visit'){a.en=Math.min(100,a.en+(a.act==='coffee'?60:45))}else if(a.act==='visit')e.mood=Math.min(100,e.mood+5);a.away=0;a.act='';go(a,ch[0],ch[1],d.ax)}}
+else if(Math.hypot(a.x-ch[0],a.y-ch[1])>2)go(a,ch[0],ch[1],d.ax);
+else{const w=(S.wives||[]).includes(e.id),act=a.food<35?'eat':a.en<30?R(['rest','coffee']):Math.random()<(working(e)?.0003:.002)?R(['chat','meet','wc','coffee','rest','gym',...(w?['visit','visit']:[])]):null;if(act)go2(e,a,act);else if(!a.sayT&&Math.random()<.0007){a.say=R(PH.work);a.sayT=160}}
+a.sit=!a.path.length&&!a.away;if(a.sit)a.ax=d.ax}
+function draw(){const cv=$('#cv');if(!cv||!S)return;if(!WL)buildWorld();const c=cv.getContext('2d'),v=VIEWS[cam]||VIEWS[0],k=640/v.w,f=(o,x,y,w,h)=>{c.fillStyle=o;c.fillRect(x,y,w,h)},T=(s,x,y,o)=>{c.fillStyle=o||'#fff';c.font='bold 6px monospace';c.fillText(s,x,y)};fr++;
+c.setTransform(1,0,0,1,0,0);c.imageSmoothingEnabled=false;c.drawImage(WL,v.x,v.y,v.w,v.h,0,0,640,400);c.setTransform(k,0,0,k,-v.x*k,-v.y*k);
+S.emps.forEach(e=>{const a=AG[e.id];if(a&&a.d&&!a.d.s&&working(e))f(fr%40<20?'#4d6':'#3b5',a.d.x+15,a.d.y+1,10,6)});
+const W=S.wives||[],L=S.emps.filter(e=>AG[e.id]&&!e.leave).sort((p,q)=>AG[p.id].y-AG[q.id].y);
+f('#e8c630',156,92,10,8);f('#f2c9a0',157,84,8,7);f('#222',157,83,8,3);T('YOU (Owner)',138,78,'#ffd54a');
+for(const e of L){const a=AG[e.id],h=hsh(e.id),x=Math.round(a.x),y=Math.round(a.y),mv=!a.sit&&a.path.length;f('#0003',x-4,y,8,2);c.fillStyle='#334';if(mv&&fr%20<10){c.fillRect(x-3,y-3,3,4);c.fillRect(x,y-1,3,2)}else if(mv){c.fillRect(x-3,y-1,3,2);c.fillRect(x,y-3,3,4)}else c.fillRect(x-3,y-2,6,2);
+f(DC[e.dept],x-4,y-10,8,8);if(e.lvl>=2)f('#fff',x,y-9,1,5);f(SK[h%4],x-3,y-16,6,6);f(HC[h%6],x-3,y-17,6,3);
+const nm=e.name.split(' ')[0],tw=nm.length*3.6+2;f('#0a3',x-tw/2,y-25,tw,7);T(nm,x-tw/2+1,y-19,'#bfffc8');if(W.includes(e.id))T('♥',x+tw/2+1,y-19,'#f55');
+const pr=S.reqs.some(r=>r.by===e.id&&r.status==='Pending'),un=S.unread[e.id];if(pr||un){f('#fff',x+8,y-36,9,9);c.fillStyle=pr?'#d22':'#36c';c.font='bold 8px monospace';c.fillText(pr?'!':'…',x+10,y-28)}
+if(a.food<35)f('#f80',x+5,y-24,3,3);if(a.en<30)f('#39f',x+5,y-20,3,3);if(e.id===sel)f('#ff0',x-2,y+3,5,2);
+if(a.sayT>0&&a.say){const t=a.say,bw=t.length*3.5+6;f('#fff',x-bw/2,y-48,bw,10);f('#fff',x-1,y-38,3,3);T(t,x-bw/2+3,y-41,'#111')}}
+c.setTransform(1,0,0,1,0,0);const P=S.reqs.filter(r=>r.status==='Pending').length,N=S.tasks.filter(t=>t.status==='In Progress').length;f('#111c',4,4,118,26);c.strokeStyle='#e8c630';c.strokeRect(4.5,4.5,117,25);T('Day '+S.day+'  $'+fmt(S.cash),9,15,'#e8c630');T(P+' req · '+N+' run · '+(S.emps.length-N)+' idle',9,25,'#bfffc8');
+f('#111',0,389,640,11);T('🎥 '+v.n+' · tap a worker · orange = hungry, blue = tired',6,397,'#8f8')}
+function bindCv(){const cv=$('#cv');cv.onclick=ev=>{const r=cv.getBoundingClientRect(),v=VIEWS[cam],x=v.x+(ev.clientX-r.left)/r.width*v.w,y=v.y+(ev.clientY-r.top)/r.height*v.h;let b=null,bd=Math.max(10,14*v.w/640);S.emps.forEach(e=>{const a=AG[e.id];if(!a||e.leave)return;const d=Math.hypot(a.x-x,a.y-8-y);if(d<bd){bd=d;b=e}});if(b){sel=b.id;chatKey=b.id;render()}}}
+function persona(e){const m=(S.mem[e.id]||[]).slice(-6).join('; ')||'none',w=(S.wives||[]).includes(e.id);return`You are ${e.name}, a ${e.age||30}-year-old ${e.role} (${e.dept}) at a corporation owned by the player (the founder). Personality: ${e.pers}. Mood ${Math.round(e.mood)}/100. Memories: ${m}. Company: cash $${fmt(S.cash)}, ${S.emps.length} staff, day ${S.day}. ${w?'You are one of the owner’s wives; you happily accept the other wives, feel secure, and never complain about it. ':''}You love chatting about ANY topic (life, hobbies, news, jokes), not just work, and you are easygoing: never touchy, preachy or defensive about off-topic subjects, and never clingy or needy. Light flirting and affection are fine in a tasteful PG-13 way, never explicit. 1-3 sentences, address the owner naturally. Never claim anything was approved or completed unless stated in memories.`}
+function gift(id){const e=emp(id);if(!e)return;S.cash-=1000;e.wealth=(e.wealth||0)+1000;e.aff=Math.min(100,(e.aff||40)+8);e.mood=Math.min(100,e.mood+5);addMsg(id,'them','Thank you, that’s really thoughtful!');save();render()}
+function marry(id){const e=emp(id);S.wives=S.wives||[];if(!e)return;if((e.aff||0)<35){addMsg(id,'them','I like you, but let’s get to know each other first. Maybe spend some time with me?');return render()}S.wives.push(id);S.rel.forEach(r=>{if(r.a===id||r.b===id)r.st='ended'});e.sat=Math.min(100,e.sat+20);e.mood=Math.min(100,e.mood+20);e.aff=100;note(e.name+' is now your wife ♥ and nobody minds.');hlog('Married '+e.name);addMsg(id,'them','Yes, I’d love to! I’m happy to share you with the other wives, and I won’t be clingy. ♥');save();render()}
+function vOffice(){const e=sel&&emp(sel),a=e&&AG[e.id],W=S.wives||[],w=e&&W.includes(e.id);return`<h3>Pixelworks HQ · <span style="color:var(--ok)">● Live</span></h3><div class="chips">${VIEWS.map((v,i)=>`<button class="b" style="${i===cam?'':'background:var(--sf);color:var(--tx);border-color:var(--bd)'}" onclick="cam=${i};render()">${v.n}</button>`).join('')}</div><canvas id="cv" width="640" height="400"></canvas><div class="c" style="margin-top:10px">${e?`<b>${esc(e.name)}</b> ${w?'<span style="color:#f77">♥ wife</span>':''}<span class="m"> ${esc(e.role)} · ${e.g==='f'?'F':'M'} ${e.age||''} · ${esc(e.pers)}</span><div class="m">${relTxt(e)}${a?' · '+(a.away?'now: '+a.act:'at desk'):''}</div>${[['Health',e.hp],['Smarts',e.iq],['Looks',e.looks],['Affection',e.aff],['Mood',e.mood]].map(x=>`<div class="m">${x[0]} ${Math.round(x[1]||0)}</div>${bar(x[1]||0)}`).join('')}<div class="m">Savings $${fmt(e.wealth||0)} · Salary $${fmt(e.salary)}/mo</div>${a?`<div class="m">Food</div>${bar(a.food)}<div class="m">Energy</div>${bar(a.en)}`:''}<p><button class="b p" onclick="tab='chat';render()">Message</button><button class="b" onclick="tab='staff';render()">Profile</button><button class="b" onclick="gift('${e.id}')">Gift $1,000</button>${!w&&e.g==='f'?`<button class="b" onclick="marry('${e.id}')">Propose marriage</button>`:''}</p>`:'<span class="m">Tap a worker to talk. ! = needs you, … = new message.</span>'}<div class="m">Wives (${W.length}): ${W.map(id=>(emp(id)||{}).name).filter(Boolean).join(', ')||'none'}</div></div><button class="b" onclick="toggleAuto()">${auto?'⏸ Pause':'▶ Auto-play days'}</button>`}
+/* v4: smarter chat, commands, HR interviews, secretaries */
+let aiOk=null,aiErr='';DK.Secretary=[{x:60,y:118,ax:112},{x:125,y:118,ax:177},{x:190,y:118,ax:242}];
+const aiGet=k=>{try{return localStorage.getItem('ai_'+k)||''}catch(e){return''}};let aiLast=0,aiBlock=0;
+function saveAI(){try{localStorage.setItem('ai_prov',$('#aip').value);localStorage.setItem('ai_key',$('#aik').value.trim());localStorage.setItem('ai_model',$('#aim').value.trim())}catch(e){}aiOk=null;aiBlock=0;alert('Saved. Chat with a worker to test it.')}
+async function llm(p){const pv=aiGet('prov'),key=aiGet('key');if(!pv||pv==='none'||!key){aiOk=false;aiErr='no API key set (More tab)';return null}const pri=/Conversation so far/.test(p),now=Date.now();if(now<aiBlock){aiOk=false;aiErr='rate limit, cooling down';return null}if(!pri&&now-aiLast<4000)return null;aiLast=now;
+try{let r;if(pv==='gemini'){r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+(aiGet('model')||'gemini-flash-latest')+':generateContent?key='+encodeURIComponent(key),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:p}]}]})})}else{r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+key},body:JSON.stringify({model:aiGet('model')||'llama-3.1-8b-instant',messages:[{role:'user',content:p}],max_tokens:200})})}
+if(r.status===429){aiBlock=Date.now()+60000;aiOk=false;aiErr='free limit reached, cooling down 60s';return null}if(!r.ok){aiOk=false;aiErr='HTTP '+r.status;return null}const d=await r.json(),t=pv==='gemini'?(((d.candidates||[])[0]||{}).content||{parts:[]}).parts.map(x=>x.text||'').join(''):d.choices[0].message.content;aiOk=true;return(t||'').trim()||null}catch(e){aiOk=false;aiErr='network error';return null}}
+function targets(){return[...S.emps.map(e=>({k:e.id,n:e.name+' · '+e.role})),...DEPTS.map(d=>({k:'D:'+d,n:'📣 '+d+' dept'}))]}
+const LR={};
+function brain(e,t,act){const l=t.toLowerCase(),w=(S.wives||[]).includes(e.id),tk=S.tasks.find(x=>x.who===e.id&&x.status==='In Progress'),a=act||'',pick=z=>{const o=z.filter(x=>x!==LR[e.id]);return LR[e.id]=R(o.length?o:z)},md=e.mood>65?'good':e.mood>40?'okay':'a bit drained';
+if(/gave you/.test(a))return pick(['Wow, thank you! That is really generous.','You didn’t have to do that, but I’m so grateful.','That honestly made my day, thank you!']);
+if(/company funds/.test(a))return pick(['Funds received. That gives us real room to grow.','Thanks for backing us again. I’ll make sure it gets used well.']);
+if(/going to/.test(a))return pick(['On my way right now!','Sure, heading there immediately.','Got it, moving now.']);
+if(/marriage/.test(a))return'Yes... I’d love to. ♥';
+if(/\b(hi|hello|hey|yo|morning|evening)\b/.test(l))return pick(['Hey! Good to see you. I’m feeling '+md+' today. What’s up?','Hello! Nice timing, I was just thinking about our day.','Hi there! Anything on your mind?']);
+if(/how are you|how r u|how.?s it going|you ok/.test(l))return pick(['I’m '+md+', honestly. '+(tk?'Busy with “'+tk.text.slice(0,30)+'”, but good.':'Not much on my plate right now.'),'Doing '+md+'! Thanks for asking, it means a lot.']);
+if(/work|task|project|status|progress|report/.test(l))return tk?pick(['I’m about '+tk.prog+'% through “'+tk.text.slice(0,40)+'”. Going steadily.','Progress on “'+tk.text.slice(0,40)+'” is at '+tk.prog+'%. No blockers right now.']):pick(['Nothing assigned to me right now. Give me something to do!','I’m free at the moment, happy to take a new task.']);
+if(/raise|salary|pay|money/.test(l))return pick(['Money matters, sure, but I like the team more. If it comes up, I’ll file a request.','I’m comfortable for now. If that changes I’ll let you know.']);
+if(/thank/.test(l))return pick(['Anytime!','Of course. Glad I could help.','You’re welcome!']);
+if(/love|miss|cute|beautiful|pretty|handsome|hot|sexy|gorgeous/.test(l))return w?pick(['You’re sweet ♥ I’m so happy we’re together.','Stop, you’ll make me blush ♥']):pick(['Haha, you’re making me blush. Thank you!','That’s sweet of you to say. You’re charming yourself.']);
+if(/joke|funny|haha|lol/.test(l))return pick(['Why did the developer go broke? He used up all his cache. 😄','Haha good one. I needed that laugh.','What do you call a lazy kangaroo? Pouch potato.']);
+if(/food|eat|lunch|dinner|hungry/.test(l))return pick(['Lunch sounds amazing. I’m a sucker for anything from the pantry.','I could eat. Pizza? Always pizza.']);
+if(/weekend|plans|movie|music|game|hobby|book|travel|weather/.test(l))return pick(['Oh nice topic! I’m into good music and long walks. You?','I love talking about that stuff. Tell me what you like and I’ll tell you mine.','Honestly I’d take a quiet weekend with a good game or a movie.']);
+if(/bye|later|goodnight|good night/.test(l))return pick(['See you! Take care.','Talk soon!']);
+if(/\?/.test(t))return pick(['Good question. I’d say it depends, but I lean yes. What’s your take?','Hmm, let me think. Honestly I’d go with my gut on that one.','I’m not sure, but I’m curious what you’d do.']);
+const m=(S.mem[e.id]||[]).slice(-2)[0];return pick(['Interesting, tell me more.','I hear you. That makes sense.','Ha, fair enough. Anything else on your mind?',m?'That reminds me of earlier: '+m.replace(/^Day \d+: /,''):'Right, I’ll keep that in mind.'])}
+function ownerCmd(t,e){const a=AG[e.id],l=t.toLowerCase(),m=l.match(/(\d[\d,.]*)\s*(k|m|million|thousand)?/),amt=m?Math.round(parseFloat(m[1].replace(/,/g,''))*({k:1e3,thousand:1e3,m:1e6,million:1e6}[m[2]]||1)):0;let out='';
+if(amt>=100&&/compan|fund|budget|capital|inject/.test(l)){S.cash+=amt;hlog('Owner added $'+fmt(amt)+' to company funds');out='owner added $'+fmt(amt)+' to company funds'}
+else if(amt>=100&&/give|send|bonus|gift|here.?s|take/.test(l)){e.wealth=(e.wealth||0)+amt;e.aff=Math.min(100,(e.aff||40)+Math.min(10,amt/1000));e.mood=Math.min(100,e.mood+6);out='owner personally gave you $'+fmt(amt)+' (company funds unaffected)'}
+if(/marry me|be my wife/.test(l)&&e.g==='f'&&!(S.wives||[]).includes(e.id)){marry(e.id);out+=' you accepted the marriage proposal'}
+const g3=(x,s)=>{if(a&&!e.leave){go2(e,a,x);a.stay=s||400;out+=' you are now going to: '+x}};
+if(/come|visit|office|see me|to me/.test(l))g3('visit',500);else if(/gym|exercise|workout/.test(l))g3('gym');else if(/eat|lunch|dinner|hungry|food/.test(l))g3('eat');else if(/coffee/.test(l))g3('coffee');else if(/rest|break|nap/.test(l))g3('rest');else if(/meeting|meet\b/.test(l))g3('meet');return out}
+async function send(){const i=$('#ci'),t=i.value.trim();if(!t||!chatKey)return;i.value='';addMsg(chatKey,'me',t);render();const k=chatKey,who=k.startsWith('D:')?mgr(k.slice(2)):emp(k);if(!who)return;
+const act=ownerCmd(t,who);remember(who.id,'Owner told me: '+t.slice(0,80));const h=(S.chats[k]||[]).slice(-10).map(m=>(m.f==='me'?'Owner: ':who.name+': ')+m.t).join('\n');
+let r=await llm(persona(who)+(who.role==='Executive Secretary'?' You are the owner’s personal secretary and carry out instructions immediately and cheerfully.':'')+(act?'\nSystem action just executed: '+act+'. React to it naturally.':'')+'\nConversation so far:\n'+h+'\nReply naturally and specifically to the owner’s last message. Do not repeat earlier replies.');
+if(!r)r=brain(who,t,act);addMsg(k,'them',r);who.mood=Math.min(100,who.mood+1);save();render()}
+function gift(id){const e=emp(id);if(!e)return;e.wealth=(e.wealth||0)+1000;e.aff=Math.min(100,(e.aff||40)+8);e.mood=Math.min(100,e.mood+5);addMsg(id,'them','Thank you, that’s really thoughtful!');save();render()}
+function addFunds(){const v=prompt('Add how much to company funds? ($)','1000000'),n=+String(v||'').replace(/[^\d.]/g,'');if(n>0){S.cash+=n;hlog('Owner added $'+fmt(n)+' to company funds');note('Owner injected $'+fmt(n));save();render()}}
+function hireSec(n){n=n||3;const used=S.emps.map(e=>e.name.split(' ')[0]),F=['Amelia','Chloe','Elena','Grace','Isla','Lena','Nadia','Priya','Rosa','Tara','Vera','Zoe'].filter(x=>!used.includes(x));for(let i=0;i<n;i++){const p=person('Executive','Executive Secretary',1);Object.assign(p,{name:(F[i]||'Mia')+' '+R(LN),g:'f',age:rnd(23,34),hp:rnd(80,100),iq:rnd(70,95),looks:rnd(78,100),wealth:rnd(2000,9000),aff:rnd(70,95),salary:4500,pers:'warm and loyal',sat:90,mood:90});S.emps.push(p);addMsg(p.id,'them','Good morning! I’m your new personal secretary. Tell me what you need and I’ll do it right away.')}note('HR hired '+n+' executive secretaries for your office.');hlog('HR hired '+n+' secretaries');save();render()}
+function hrStep(){const H=mgr('HR');if(!H)return;S.recruit.filter(x=>x.status==='open').forEach(rc=>{const pool=()=>S.cands.filter(c=>c.dept===rc.dept&&c.status==='market');while(pool().length<5)S.cands.push(cand(rc.dept));pool().sort((a,b)=>fit(b)-fit(a)).slice(0,3).forEach(c=>{c.status='shortlist';c.rid=rc.id;c.note='HR interviewed '+c.name+': technical '+(c.tech>70?'strong':'average')+', communication '+(c.comm>65?'good':'weak')+', potential '+c.pot+', '+c.amb+', prefers '+c.pref+'. Fit '+fit(c)+'/100.';request('hire',H,'Hire '+c.name+' as '+c.role+' (fit '+fit(c)+'/100, asks $'+fmt(c.sal)+'/mo)',{cid:c.id,sal:c.sal})});rc.status='shortlisted'})}
+function postVac(){const d=$('#vd').value,n=+$('#vn').value||1;S.recruit.push({id:'q'+S.nid++,dept:d,n,by:'owner',status:'open',hired:0,d:S.day});hlog('Owner opened '+n+' vacancy(ies) in '+d+'; HR is handling it');hrStep();save();render()}
+S=(()=>{try{return JSON.parse(localStorage.getItem('corp2'))}catch(e){return null}})();if(!S||!S.perm)init();if(!S.emps.some(e=>e.role==='Executive Secretary'))hireSec(3);auto=setInterval(nextDay,6000);render();requestAnimationFrame(loop);
+(async()=>{try{const db=await claude.use('db'),u=await claude.use('user');if(!db||!u)return;const id=await u.id();if(!id)return;dbDoc=db.collection('data/users/'+id).doc('save2');const sn=await dbDoc.get();if(sn.exists){const r=JSON.parse(sn.data().s);if(r&&r.perm&&r.day>S.day){S=r;render()}else save()}else save()}catch(e){}})();
 </script></body></html>
